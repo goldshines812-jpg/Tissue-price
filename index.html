@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>衛生紙比價神器</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Microsoft JhengHei", sans-serif;
+      background: #f5f7fa;
+      color: #222;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: #1976d2;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    #result {
+      margin-top: 20px;
+    }
+
+    .result-card {
+      background: #e8f5e9;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 12px;
+    }
+
+    .price {
+      font-size: 22px;
+      font-weight: bold;
+      color: #137333;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #777;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🧻 衛生紙比價神器</h1>
+
+  <div class="subtitle">
+    不同抽數、包數、層數，也能快速比較
+  </div>
+
+  <div class="card">
+
+    <label>商品名稱</label>
+    <input id="name" type="text" placeholder="例如：品牌A 抽取式衛生紙">
+
+    <label>售價（元）</label>
+    <input id="price" type="number" inputmode="decimal" placeholder="例如：299">
+
+    <label>每包抽數</label>
+    <input id="sheets" type="number" inputmode="numeric" placeholder="例如：100">
+
+    <label>一串幾包</label>
+    <input id="packs" type="number" inputmode="numeric" placeholder="例如：12">
+
+    <label>幾層</label>
+    <input id="layers" type="number" inputmode="numeric" placeholder="例如：3">
+
+    <button type="button" onclick="calculatePrice()">
+      開始計算
+    </button>
+
+    <div id="result"></div>
+
+  </div>
+
+  <div class="note">
+    ※ 比價結果依輸入的商品規格計算，實際售價及商品規格請以賣場標示為準。
+  </div>
+
+</div>
+
+<script>
+function calculatePrice() {
+
+  const name =
+    document.getElementById("name").value.trim() || "這款衛生紙";
+
+  const price =
+    Number(document.getElementById("price").value);
+
+  const sheets =
+    Number(document.getElementById("sheets").value);
+
+  const packs =
+    Number(document.getElementById("packs").value);
+
+  const layers =
+    Number(document.getElementById("layers").value);
+
+  if (
+    price <= 0 ||
+    sheets <= 0 ||
+    packs <= 0 ||
+    layers <= 0
+  ) {
+    alert("請把售價、抽數、包數、層數全部填寫完整");
+    return;
+  }
+
+  const totalSheets = sheets * packs;
+
+  const pricePer100 =
+    price / totalSheets * 100;
+
+  const totalLayerSheets =
+    totalSheets * layers;
+
+  const pricePer1000Layer =
+    price / totalLayerSheets * 1000;
+
+  document.getElementById("result").innerHTML = `
+    <div class="result-card">
+
+      <strong>${name}</strong>
+
+      <p>
+        總抽數：
+        ${totalSheets.toLocaleString()} 抽
+      </p>
+
+      <p>
+        每 100 抽價格
+      </p>
+
+      <div class="price">
+        NT$ ${pricePer100.toFixed(2)}
+      </div>
+
+      <p>
+        每 1,000 層抽價格：
+        NT$ ${pricePer1000Layer.toFixed(2)}
+      </p>
+
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
