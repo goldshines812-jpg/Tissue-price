@@ -1,142 +1,138 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>衛生紙比價神器</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>衛生紙比價神器</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, "Microsoft JhengHei", sans-serif;
-      background: #f5f7fa;
-      color: #222;
-    }
+body {
+  margin: 0;
+  font-family: Arial, "Microsoft JhengHei", sans-serif;
+  background: #f5f7fa;
+  color: #222;
+}
 
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-    }
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 28px 16px 50px;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 5px;
-    }
+h1 {
+  text-align: center;
+  margin-bottom: 8px;
+}
 
-    .subtitle {
-      text-align: center;
-      color: #666;
-      margin-bottom: 25px;
-    }
+.subtitle {
+  text-align: center;
+  color: #777;
+  margin-bottom: 28px;
+}
 
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
+.card {
+  background: white;
+  padding: 28px 20px;
+  border-radius: 24px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.06);
+}
 
-    label {
-      display: block;
-      margin-top: 15px;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
+label {
+  display: block;
+  font-weight: bold;
+  margin: 20px 0 8px;
+}
 
-    input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      font-size: 16px;
-    }
+input {
+  width: 100%;
+  padding: 16px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 14px;
+}
 
-    button {
-      width: 100%;
-      margin-top: 22px;
-      padding: 15px;
-      border: none;
-      border-radius: 12px;
-      background: #1976d2;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button {
+  width: 100%;
+  margin-top: 25px;
+  padding: 17px;
+  border: 0;
+  border-radius: 16px;
+  background: #1976d2;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
 
-    button:active {
-      transform: scale(0.98);
-    }
+.result {
+  display: none;
+  margin-top: 22px;
+  padding: 22px;
+  border-radius: 18px;
+  background: #e8f5e9;
+}
 
-    #result {
-      margin-top: 20px;
-    }
+.big-price {
+  color: #168536;
+  font-size: 28px;
+  font-weight: bold;
+}
 
-    .result-card {
-      background: #e8f5e9;
-      border-radius: 12px;
-      padding: 16px;
-      margin-top: 12px;
-    }
-
-    .price {
-      font-size: 22px;
-      font-weight: bold;
-      color: #137333;
-    }
-
-    .note {
-      font-size: 13px;
-      color: #777;
-      margin-top: 20px;
-      line-height: 1.6;
-    }
-  </style>
+.note {
+  color: #777;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 22px;
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-  <h1>🧻 衛生紙比價神器</h1>
+<h1>🧻 衛生紙比價神器</h1>
 
-  <div class="subtitle">
-    不同抽數、包數、層數，也能快速比較
-  </div>
+<div class="subtitle">
+不同抽數、包數、層數，也能快速比較
+</div>
 
-  <div class="card">
+<div class="card">
 
-    <label>商品名稱</label>
-    <input id="name" type="text" placeholder="例如：品牌A 抽取式衛生紙">
+<label>商品名稱</label>
+<input id="name" type="text"
+placeholder="例如：品牌A 抽取式衛生紙">
 
-    <label>售價（元）</label>
-    <input id="price" type="number" inputmode="decimal" placeholder="例如：299">
+<label>售價（元）</label>
+<input id="price" type="number"
+inputmode="decimal" placeholder="例如：299">
 
-    <label>每包抽數</label>
-    <input id="sheets" type="number" inputmode="numeric" placeholder="例如：100">
+<label>每包抽數</label>
+<input id="sheets" type="number"
+inputmode="numeric" placeholder="例如：100">
 
-    <label>一串幾包</label>
-    <input id="packs" type="number" inputmode="numeric" placeholder="例如：12">
+<label>一串幾包</label>
+<input id="packs" type="number"
+inputmode="numeric" placeholder="例如：12">
 
-    <label>幾層</label>
-    <input id="layers" type="number" inputmode="numeric" placeholder="例如：3">
+<label>幾層</label>
+<input id="layers" type="number"
+inputmode="numeric" placeholder="例如：3">
 
-    <button type="button" onclick="calculatePrice()">
-      開始計算
-    </button>
+<button type="button" onclick="calculatePrice()">
+開始計算
+</button>
 
-    <div id="result"></div>
+<div id="result" class="result"></div>
 
-  </div>
+</div>
 
-  <div class="note">
-    ※ 比價結果依輸入的商品規格計算，實際售價及商品規格請以賣場標示為準。
-  </div>
+<div class="note">
+※ 比價結果依輸入的商品規格計算，實際售價及商品規格請以賣場標示為準。
+</div>
 
 </div>
 
@@ -144,7 +140,7 @@
 function calculatePrice() {
 
   const name =
-    document.getElementById("name").value.trim() || "這款衛生紙";
+    document.getElementById("name").value.trim();
 
   const price =
     Number(document.getElementById("price").value);
@@ -179,30 +175,28 @@ function calculatePrice() {
   const pricePer1000Layer =
     price / totalLayerSheets * 1000;
 
-  document.getElementById("result").innerHTML = `
-    <div class="result-card">
+  const result =
+    document.getElementById("result");
 
-      <strong>${name}</strong>
+  result.style.display = "block";
 
-      <p>
-        總抽數：
-        ${totalSheets.toLocaleString()} 抽
-      </p>
+  result.innerHTML = `
+    <strong>${name || "這款衛生紙"}</strong>
 
-      <p>
-        每 100 抽價格
-      </p>
+    <p>
+      總抽數：${totalSheets.toLocaleString()} 抽
+    </p>
 
-      <div class="price">
-        NT$ ${pricePer100.toFixed(2)}
-      </div>
+    <p>每 100 抽價格</p>
 
-      <p>
-        每 1,000 層抽價格：
-        NT$ ${pricePer1000Layer.toFixed(2)}
-      </p>
-
+    <div class="big-price">
+      NT$ ${pricePer100.toFixed(2)}
     </div>
+
+    <p>
+      每 1,000 層抽價格：
+      NT$ ${pricePer1000Layer.toFixed(2)}
+    </p>
   `;
 }
 </script>
