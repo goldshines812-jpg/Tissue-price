@@ -225,7 +225,7 @@ function getProduct(letter) {
   }
 
   const totalSheets = sheets * packs;
-
+const pricePerPack = price / packs;
   const pricePer100 =
     (price / totalSheets) * 100;
 
@@ -238,6 +238,7 @@ function getProduct(letter) {
   return {
     name: name,
     totalSheets: totalSheets,
+    pricePerPack: pricePerPack,
     pricePer100: pricePer100,
     pricePer1000Layer: pricePer1000Layer
   };
@@ -301,7 +302,8 @@ function makeResult(product) {
     '<p>總抽數：' +
     product.totalSheets.toLocaleString() +
     ' 抽</p>' +
-
+'<p>每包：NT$ ' +
+product.pricePerPack.toFixed(2) + '</p>' +
     '<p>每 100 抽：' +
     '<span class="price">NT$ ' +
     product.pricePer100.toFixed(2) +
