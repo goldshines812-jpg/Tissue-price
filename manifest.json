@@ -1,0 +1,9 @@
+{
+  "name": "衛生紙比價神器",
+  "short_name": "衛生紙比價",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#1976d2",
+  "description": "快速比較不同規格衛生紙的實際價格"
+}
