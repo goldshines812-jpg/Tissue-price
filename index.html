@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>衛生紙比價神器</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -34,9 +37,9 @@ h1 {
 .card {
   background: white;
   padding: 24px;
-  border-radius: 24px;
+  border-radius: 22px;
   margin-bottom: 22px;
-  box-shadow: 0 8px 25px rgba(0,0,0,.05);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.06);
 }
 
 .card h2 {
@@ -46,7 +49,8 @@ h1 {
 label {
   display: block;
   font-weight: bold;
-  margin: 18px 0 8px;
+  margin-top: 18px;
+  margin-bottom: 8px;
 }
 
 input {
@@ -59,40 +63,45 @@ input {
 
 button {
   width: 100%;
-  padding: 18px;
-  margin-top: 10px;
-  border: 0;
-  border-radius: 16px;
+  padding: 19px;
+  border: none;
+  border-radius: 18px;
   background: #1976d2;
   color: white;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .result {
   display: none;
-  background: #e8f5e9;
+  background: white;
+  margin-top: 25px;
   padding: 24px;
-  border-radius: 20px;
-  margin-top: 24px;
+  border-radius: 22px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.06);
 }
 
 .winner {
-  font-size: 26px;
+  background: #e8f5e9;
+  padding: 16px;
+  border-radius: 14px;
+  font-size: 20px;
   font-weight: bold;
-  color: #16883a;
   margin-bottom: 20px;
 }
 
 .price {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
+  color: #1976d2;
 }
 
 .note {
   color: #777;
   font-size: 14px;
-  margin-top: 25px;
+  margin-top: 20px;
+  line-height: 1.6;
 }
 </style>
 </head>
@@ -102,6 +111,7 @@ button {
 <div class="container">
 
 <h1>🧻 衛生紙比價神器</h1>
+
 <div class="subtitle">
 不同抽數、包數、層數，也能公平比較
 </div>
@@ -110,7 +120,7 @@ button {
 <h2>商品 A</h2>
 
 <label>商品名稱</label>
-<input id="nameA" placeholder="例如：品牌 A">
+<input id="nameA" type="text" placeholder="例如：品牌 A">
 
 <label>售價（元）</label>
 <input id="priceA" type="number" inputmode="decimal">
@@ -125,11 +135,12 @@ button {
 <input id="layersA" type="number" inputmode="numeric">
 </div>
 
+
 <div class="card">
 <h2>商品 B</h2>
 
 <label>商品名稱</label>
-<input id="nameB" placeholder="例如：品牌 B">
+<input id="nameB" type="text" placeholder="例如：品牌 B">
 
 <label>售價（元）</label>
 <input id="priceB" type="number" inputmode="decimal">
@@ -143,25 +154,31 @@ button {
 <label>幾層</label>
 <input id="layersB" type="number" inputmode="numeric">
 </div>
+
+
 <div class="card">
-  <h2>商品 C</h2>
+<h2>商品 C</h2>
 
-  <label>商品名稱</label>
-  <input id="nameC" placeholder="例如：品牌 C">
+<label>商品名稱</label>
+<input id="nameC" type="text" placeholder="例如：品牌 C">
 
-  <label>售價（元）</label>
-  <input id="priceC" type="number" inputmode="decimal">
+<label>售價（元）</label>
+<input id="priceC" type="number" inputmode="decimal">
 
-  <label>每包抽數</label>
-  <input id="sheetsC" type="number" inputmode="numeric">
+<label>每包抽數</label>
+<input id="sheetsC" type="number" inputmode="numeric">
 
-  <label>一串幾包</label>
-  <input id="packsC" type="number" inputmode="numeric">
+<label>一串幾包</label>
+<input id="packsC" type="number" inputmode="numeric">
 
-  <label>幾層</label>
-  <input id="layersC" type="number" inputmode="numeric">
+<label>幾層</label>
+<input id="layersC" type="number" inputmode="numeric">
 </div>
-<button onclick="compareProducts()">開始比價</button>
+
+
+<button id="compareButton" type="button">
+開始比價
+</button>
 
 <div id="result" class="result"></div>
 
@@ -171,11 +188,16 @@ button {
 
 </div>
 
+
 <script>
+
 function getProduct(letter) {
+
+  const nameInput =
+    document.getElementById("name" + letter).value.trim();
+
   const name =
-    document.getElementById("name" + letter).value.trim() ||
-    "商品 " + letter;
+    nameInput || ("商品 " + letter);
 
   const price =
     Number(document.getElementById("price" + letter).value);
@@ -190,6 +212,10 @@ function getProduct(letter) {
     Number(document.getElementById("layers" + letter).value);
 
   if (
+    !Number.isFinite(price) ||
+    !Number.isFinite(sheets) ||
+    !Number.isFinite(packs) ||
+    !Number.isFinite(layers) ||
     price <= 0 ||
     sheets <= 0 ||
     packs <= 0 ||
@@ -201,22 +227,22 @@ function getProduct(letter) {
   const totalSheets = sheets * packs;
 
   const pricePer100 =
-    price / totalSheets * 100;
+    (price / totalSheets) * 100;
 
   const totalLayerSheets =
     totalSheets * layers;
 
   const pricePer1000Layer =
-    price / totalLayerSheets * 1000;
+    (price / totalLayerSheets) * 1000;
 
   return {
-    name,
-    price,
-    totalSheets,
-    pricePer100,
-    pricePer1000Layer
+    name: name,
+    totalSheets: totalSheets,
+    pricePer100: pricePer100,
+    pricePer1000Layer: pricePer1000Layer
   };
 }
+
 
 function compareProducts() {
 
@@ -224,70 +250,74 @@ function compareProducts() {
   const B = getProduct("B");
   const C = getProduct("C");
 
-  if (!A || !B｜｜！C) {
-    alert("請把商品 A、商品 B、商品C的售價、抽數、包數、層數都填完整。");
+  if (!A || !B || !C) {
+    alert("請把商品 A、商品 B、商品 C 的售價、抽數、包數、層數都填完整，而且數字必須大於 0。");
     return;
   }
+
+  const products = [A, B, C];
+
+  products.sort(function(a, b) {
+    return a.pricePer1000Layer - b.pricePer1000Layer;
+  });
+
+  const cheapest = products[0];
+  const second = products[1];
+
+  const percent =
+    ((second.pricePer1000Layer -
+      cheapest.pricePer1000Layer) /
+      second.pricePer1000Layer) * 100;
 
   const result =
     document.getElementById("result");
 
-  const products = [A, B, C];
-products.sort((a, b) => a.pricePer1000Layer - b.pricePer1000Layer);
+  result.innerHTML =
+    '<div class="winner">🏆 ' +
+    cheapest.name +
+    ' 最便宜，比第二便宜約 ' +
+    percent.toFixed(1) +
+    '%</div>' +
 
-const cheapest = products[0];
-const second = products[1];
-
-const percent =
-  ((second.pricePer1000Layer - cheapest.pricePer1000Layer) /
-   second.pricePer1000Layer) * 100;
-
-const winnerText =
-  `🏆 ${cheapest.name} 最便宜，比第二便宜約 ${percent.toFixed(1)}%`;
-  result.innerHTML = `
-    <div class="winner">${winnerText}</div>
-
-    <h3>${A.name}</h3>
-    <p>總抽數：${A.totalSheets.toLocaleString()} 抽</p>
-    <p>每 100 抽：
-       <span class="price">
-       NT$ ${A.pricePer100.toFixed(2)}
-       </span>
-    </p>
-    <p>每 1,000 層抽：
-       NT$ ${A.pricePer1000Layer.toFixed(2)}
-    </p>
-
-    <hr>
-
-    <h3>${B.name}</h3>
-    <p>總抽數：${B.totalSheets.toLocaleString()} 抽</p>
-    <p>每 100 抽：
-       <span class="price">
-       NT$ ${B.pricePer100.toFixed(2)}
-       </span>
-    </p>
-    <p>每 1,000 層抽：
-       NT$ ${B.pricePer1000Layer.toFixed(2)}
-    </p>
-    <hr>
-
-<h3>${C.name}</h3>
-<p>總抽數：${C.totalSheets.toLocaleString()} 抽</p>
-
-<p>每 100 抽：
-  <span class="price">
-    NT$ ${C.pricePer100.toFixed(2)}
-  </span>
-</p>
-
-<p>每 1,000 層抽：
-  NT$ ${C.pricePer1000Layer.toFixed(2)}
-</p>
-  `;
+    makeResult(A) +
+    '<hr>' +
+    makeResult(B) +
+    '<hr>' +
+    makeResult(C);
 
   result.style.display = "block";
+
+  result.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
 }
+
+
+function makeResult(product) {
+
+  return (
+    '<h3>' + product.name + '</h3>' +
+    '<p>總抽數：' +
+    product.totalSheets.toLocaleString() +
+    ' 抽</p>' +
+
+    '<p>每 100 抽：' +
+    '<span class="price">NT$ ' +
+    product.pricePer100.toFixed(2) +
+    '</span></p>' +
+
+    '<p>每 1,000 層抽：NT$ ' +
+    product.pricePer1000Layer.toFixed(2) +
+    '</p>'
+  );
+}
+
+
+document
+  .getElementById("compareButton")
+  .addEventListener("click", compareProducts);
+
 </script>
 
 </body>
