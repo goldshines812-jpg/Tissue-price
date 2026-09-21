@@ -5,5 +5,13 @@
   "display": "standalone",
   "background_color": "#f5f7fa",
   "theme_color": "#1976d2",
-  "description": "快速比較不同規格衛生紙的實際價格"
+  "description": "快速比較不同規格衛生紙的實際價格",
+  "icons": [
+    {
+      "src": "./file_00000000e40482078ee59db564178eda.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
