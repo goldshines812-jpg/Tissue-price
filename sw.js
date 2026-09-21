@@ -1,4 +1,4 @@
-const CACHE_NAME = "tissue-price-v1";
+const CACHE_NAME = "tissue-price-v2";
 
 const FILES_TO_CACHE = [
   "./",
