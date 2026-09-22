@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#1976d2">
-<title>衛生紙比價神器 V2.4.2</title>
+<title>衛生紙比價神器 V2.6</title>
 
 <style>
 *{box-sizing:border-box}
@@ -159,13 +159,40 @@ button{cursor:pointer}
 }
 .note{color:#777;font-size:13px;line-height:1.8}
 .footer{text-align:center;color:#aaa;font-size:12px;margin-top:25px}
+
+.scan-card{
+  margin:0 0 18px;
+  padding:14px;
+  border:1px solid #d9e4f5;
+  border-radius:16px;
+  background:#f7faff;
+}
+.scan-btn,.scan-alt-btn,.scan-stop-btn{
+  width:100%;
+  border:0;
+  border-radius:14px;
+  padding:14px 12px;
+  font-size:17px;
+  font-weight:bold;
+  margin:6px 0;
+}
+.scan-btn{background:#1976d2;color:#fff}
+.scan-alt-btn{background:#eef4ff;color:#195ca8;border:1px solid #b9cff0}
+.scan-stop-btn{background:#666;color:#fff}
+.scan-reader{display:none;margin-top:10px}
+.scan-status{font-size:14px;line-height:1.6;margin-top:8px;color:#555}
+.scan-ok{color:#16823b;font-weight:bold}
+.barcode-input{margin-top:8px}
+
 </style>
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 
 <body>
 <div class="container">
 
-<h1>🧻 衛生紙比價神器 V2.4.2</h1>
+<h1>🧻 衛生紙比價神器 V2.6</h1>
 <div class="subtitle">促銷換算・價格走勢・歷史價格一鍵整理</div>
 
 <div class="card">
@@ -179,6 +206,18 @@ button{cursor:pointer}
 <!-- 商品 A -->
 <div class="card" id="productA">
 <h2>商品 A</h2>
+
+<div class="scan-card">
+  <button id="scanBtnA" class="scan-btn" type="button">📷 掃描商品條碼</button>
+  <button id="scanFileBtnA" class="scan-alt-btn" type="button">🖼️ 拍照／從相簿辨識條碼</button>
+  <input id="scanFileA" type="file" accept="image/*" capture="environment" style="display:none">
+  <div id="readerA" class="scan-reader"></div>
+  <button id="stopScanA" class="scan-stop-btn" type="button" style="display:none">✕ 關閉掃描</button>
+  <label>商品條碼（可手動輸入）</label>
+  <input id="barcodeA" class="barcode-input" inputmode="numeric" autocomplete="off" placeholder="例如：4711234567890">
+  <div id="scanStatusA" class="scan-status">可直接掃描手上商品的 EAN／UPC 條碼。</div>
+</div>
+
 
 <label>商品名稱／品項</label>
 <input id="nameA" placeholder="例如：棉柔舒適抽取衛生紙">
@@ -251,6 +290,18 @@ button{cursor:pointer}
 <div class="card" id="productB">
 <h2>商品 B</h2>
 
+<div class="scan-card">
+  <button id="scanBtnB" class="scan-btn" type="button">📷 掃描商品條碼</button>
+  <button id="scanFileBtnB" class="scan-alt-btn" type="button">🖼️ 拍照／從相簿辨識條碼</button>
+  <input id="scanFileB" type="file" accept="image/*" capture="environment" style="display:none">
+  <div id="readerB" class="scan-reader"></div>
+  <button id="stopScanB" class="scan-stop-btn" type="button" style="display:none">✕ 關閉掃描</button>
+  <label>商品條碼（可手動輸入）</label>
+  <input id="barcodeB" class="barcode-input" inputmode="numeric" autocomplete="off" placeholder="例如：4711234567890">
+  <div id="scanStatusB" class="scan-status">可直接掃描手上商品的 EAN／UPC 條碼。</div>
+</div>
+
+
 <label>商品名稱／品項</label>
 <input id="nameB" placeholder="例如：棉柔舒適抽取衛生紙">
 
@@ -276,6 +327,8 @@ button{cursor:pointer}
 <option>其他通路</option>
 </select>
 <input id="storeOtherB" class="extra" placeholder="請輸入通路">
+<label>商品購買網址（選填）</label>
+<input id="urlB" type="url" inputmode="url" placeholder="例如：https://商品網址">
 
 <label>賣場標示售價（元）</label>
 <input id="priceB" type="number" inputmode="decimal" placeholder="例如：299">
@@ -321,6 +374,18 @@ button{cursor:pointer}
 <div class="card" id="productC">
 <h2>商品 C</h2>
 
+<div class="scan-card">
+  <button id="scanBtnC" class="scan-btn" type="button">📷 掃描商品條碼</button>
+  <button id="scanFileBtnC" class="scan-alt-btn" type="button">🖼️ 拍照／從相簿辨識條碼</button>
+  <input id="scanFileC" type="file" accept="image/*" capture="environment" style="display:none">
+  <div id="readerC" class="scan-reader"></div>
+  <button id="stopScanC" class="scan-stop-btn" type="button" style="display:none">✕ 關閉掃描</button>
+  <label>商品條碼（可手動輸入）</label>
+  <input id="barcodeC" class="barcode-input" inputmode="numeric" autocomplete="off" placeholder="例如：4711234567890">
+  <div id="scanStatusC" class="scan-status">可直接掃描手上商品的 EAN／UPC 條碼。</div>
+</div>
+
+
 <label>商品名稱／品項</label>
 <input id="nameC" placeholder="例如：棉柔舒適抽取衛生紙">
 
@@ -346,6 +411,8 @@ button{cursor:pointer}
 <option>其他通路</option>
 </select>
 <input id="storeOtherC" class="extra" placeholder="請輸入通路">
+<label>商品購買網址（選填）</label>
+<input id="urlC" type="url" inputmode="url" placeholder="例如：https://商品網址">
 
 <label>賣場標示售價（元）</label>
 <input id="priceC" type="number" inputmode="decimal" placeholder="例如：299">
@@ -426,7 +493,7 @@ button{cursor:pointer}
 </div>
 
 <div class="footer">
-衛生紙比價神器 V2.4.2｜最新版
+衛生紙比價神器 V2.6｜最新版
 </div>
 
 </div>
@@ -509,6 +576,7 @@ function getProduct(id){
  return{
   id:id,
   name:el("name"+id).value.trim(),
+   barcode:(el("barcode"+id)?el("barcode"+id).value.trim():""),
   brand:brand(id),
   store:store(id),
    url:(el("url"+id) ? el("url"+id).value.trim() : ""),
@@ -774,6 +842,8 @@ function saveCompared(){
      found.priceHistory.push(snap);
 
      found.name=p.name;
+      found.barcode=p.barcode||found.barcode||"";
+      found.url=p.url||found.url||"";
      found.brand=p.brand;
      found.store=p.store;
      found.price=p.price;
@@ -1032,6 +1102,222 @@ el("clearBtn").addEventListener("click",function(){
 });
 
 updateCount();
+
+
+/* ===== V2.6 條碼掃描：原生 BarcodeDetector + html5-qrcode 備援 ===== */
+var scanSessions={A:null,B:null,C:null};
+
+function scanStatus(id,msg,ok){
+  var box=el("scanStatus"+id);
+  if(!box)return;
+  box.className="scan-status"+(ok?" scan-ok":"");
+  box.textContent=msg;
+}
+
+function acceptBarcode(id,code){
+  code=String(code||"").trim();
+  if(!code)return;
+  el("barcode"+id).value=code;
+  scanStatus(id,"✅ 掃描成功："+code,true);
+  stopScan(id);
+  try{localStorage.setItem("tissueLastBarcode"+id,code);}catch(e){}
+}
+
+async function stopScan(id){
+  var s=scanSessions[id];
+  scanSessions[id]=null;
+  var stop=el("stopScan"+id);
+  if(stop)stop.style.display="none";
+
+  if(s && s.kind==="native"){
+    s.running=false;
+    if(s.stream){
+      s.stream.getTracks().forEach(function(t){t.stop();});
+    }
+    var reader=el("reader"+id);
+    if(reader){reader.innerHTML="";reader.style.display="none";}
+  }
+
+  if(s && s.kind==="html5" && s.scanner){
+    try{
+      var state=s.scanner.getState ? s.scanner.getState() : null;
+      if(state===2 || state===3) await s.scanner.stop();
+    }catch(e){}
+    try{await s.scanner.clear();}catch(e){}
+    var r=el("reader"+id);
+    if(r){r.innerHTML="";r.style.display="none";}
+  }
+}
+
+async function startNativeScan(id){
+  if(!("BarcodeDetector" in window))throw new Error("NO_NATIVE");
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia)throw new Error("NO_CAMERA");
+
+  var formats=[];
+  try{
+    var supported=await BarcodeDetector.getSupportedFormats();
+    ["ean_13","ean_8","upc_a","upc_e","code_128","code_39","qr_code"].forEach(function(f){
+      if(supported.indexOf(f)>=0)formats.push(f);
+    });
+  }catch(e){}
+
+  var detector=formats.length?new BarcodeDetector({formats:formats}):new BarcodeDetector();
+  var stream=await navigator.mediaDevices.getUserMedia({
+    video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}},
+    audio:false
+  });
+
+  var reader=el("reader"+id);
+  reader.style.display="block";
+  reader.innerHTML='<video id="nativeVideo'+id+'" playsinline muted style="width:100%;border-radius:14px;background:#000"></video>';
+  var video=el("nativeVideo"+id);
+  video.srcObject=stream;
+  await video.play();
+
+  var session={kind:"native",stream:stream,detector:detector,running:true,busy:false};
+  scanSessions[id]=session;
+  el("stopScan"+id).style.display="block";
+  scanStatus(id,"相機已開啟，請把條碼放在畫面中央。");
+
+  async function loop(){
+    if(scanSessions[id]!==session || !session.running)return;
+    if(!session.busy && video.readyState>=2){
+      session.busy=true;
+      try{
+        var codes=await detector.detect(video);
+        if(codes && codes.length && codes[0].rawValue){
+          acceptBarcode(id,codes[0].rawValue);
+          return;
+        }
+      }catch(e){}
+      session.busy=false;
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+function ensureHtml5Qrcode(){
+  return typeof window.Html5Qrcode!=="undefined";
+}
+
+async function startFallbackCamera(id){
+  if(!ensureHtml5Qrcode())throw new Error("FALLBACK_NOT_LOADED");
+  var reader=el("reader"+id);
+  reader.style.display="block";
+  reader.innerHTML="";
+  var scanner=new Html5Qrcode("reader"+id);
+  scanSessions[id]={kind:"html5",scanner:scanner};
+  el("stopScan"+id).style.display="block";
+  scanStatus(id,"正在使用備援掃描器開啟相機…");
+
+  var config={
+    fps:10,
+    qrbox:function(w,h){
+      return {width:Math.max(180,Math.floor(w*0.82)),height:Math.max(100,Math.floor(h*0.35))};
+    },
+    aspectRatio:1.777778,
+    formatsToSupport:[
+      Html5QrcodeSupportedFormats.EAN_13,
+      Html5QrcodeSupportedFormats.EAN_8,
+      Html5QrcodeSupportedFormats.UPC_A,
+      Html5QrcodeSupportedFormats.UPC_E,
+      Html5QrcodeSupportedFormats.CODE_128,
+      Html5QrcodeSupportedFormats.CODE_39,
+      Html5QrcodeSupportedFormats.QR_CODE
+    ]
+  };
+
+  await scanner.start(
+    {facingMode:"environment"},
+    config,
+    function(decodedText){acceptBarcode(id,decodedText);},
+    function(){}
+  );
+  scanStatus(id,"備援掃描器已開啟，請對準商品條碼。");
+}
+
+async function startScan(id){
+  await stopScan(id);
+  scanStatus(id,"正在開啟掃描器…");
+  try{
+    await startNativeScan(id);
+  }catch(nativeError){
+    try{
+      await stopScan(id);
+      await startFallbackCamera(id);
+    }catch(fallbackError){
+      await stopScan(id);
+      scanStatus(id,"無法開啟即時掃描。請使用「拍照／從相簿辨識條碼」或手動輸入。");
+    }
+  }
+}
+
+async function scanImageFile(id,file){
+  if(!file)return;
+  await stopScan(id);
+  scanStatus(id,"正在辨識照片中的條碼…");
+
+  if("BarcodeDetector" in window){
+    try{
+      var detector=new BarcodeDetector();
+      var bitmap=await createImageBitmap(file);
+      var codes=await detector.detect(bitmap);
+      if(bitmap.close)bitmap.close();
+      if(codes && codes.length && codes[0].rawValue){
+        acceptBarcode(id,codes[0].rawValue);
+        return;
+      }
+    }catch(e){}
+  }
+
+  if(ensureHtml5Qrcode()){
+    var tempId="fileReader"+id;
+    var reader=el("reader"+id);
+    reader.style.display="block";
+    reader.innerHTML='<div id="'+tempId+'"></div>';
+    var scanner=new Html5Qrcode(tempId);
+    try{
+      var result=await scanner.scanFile(file,true);
+      acceptBarcode(id,result);
+      try{await scanner.clear();}catch(e){}
+      reader.innerHTML="";
+      reader.style.display="none";
+      return;
+    }catch(e){
+      try{await scanner.clear();}catch(x){}
+      reader.innerHTML="";
+      reader.style.display="none";
+    }
+  }
+
+  scanStatus(id,"⚠️ 這張照片沒有辨識到條碼。請靠近條碼重新拍照，或手動輸入條碼。");
+}
+
+["A","B","C"].forEach(function(id){
+  el("scanBtn"+id).addEventListener("click",function(){startScan(id);});
+  el("stopScan"+id).addEventListener("click",function(){stopScan(id);});
+  el("scanFileBtn"+id).addEventListener("click",function(){el("scanFile"+id).click();});
+  el("scanFile"+id).addEventListener("change",function(){
+    var file=this.files && this.files[0];
+    if(file)scanImageFile(id,file);
+    this.value="";
+  });
+  el("barcode"+id).addEventListener("input",function(){
+    var v=this.value.trim();
+    if(v)scanStatus(id,"條碼："+v,true);
+    else scanStatus(id,"可直接掃描手上商品的 EAN／UPC 條碼。");
+  });
+  try{
+    var old=localStorage.getItem("tissueLastBarcode"+id);
+    if(old)el("barcode"+id).value=old;
+  }catch(e){}
+});
+
+window.addEventListener("pagehide",function(){
+  ["A","B","C"].forEach(function(id){stopScan(id);});
+});
+
 </script>
 
 </body>
