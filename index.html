@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>衛生紙比價神器</title>
+<title>衛生紙比價神器 V2</title>
 
 <style>
 * {
@@ -25,48 +25,48 @@ body {
 }
 
 h1 {
-  font-size: 34px;
+  font-size: 32px;
   margin: 0 0 8px;
 }
 
 .subtitle {
   color: #777;
-  font-size: 18px;
-  margin-bottom: 30px;
+  font-size: 17px;
+  margin-bottom: 25px;
   line-height: 1.6;
 }
 
 .card {
   background: white;
-  border-radius: 28px;
-  padding: 28px 24px;
-  margin-bottom: 24px;
+  border-radius: 24px;
+  padding: 25px 22px;
+  margin-bottom: 22px;
   box-shadow: 0 8px 28px rgba(0,0,0,0.06);
 }
 
 h2 {
   margin-top: 0;
-  margin-bottom: 25px;
-  font-size: 28px;
+  margin-bottom: 20px;
+  font-size: 25px;
 }
 
 label {
   display: block;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 9px;
+  margin-top: 18px;
+  margin-bottom: 8px;
 }
 
 input,
 select {
   width: 100%;
-  min-height: 58px;
-  padding: 14px 16px;
+  min-height: 56px;
+  padding: 13px 15px;
   border: 1px solid #ccc;
-  border-radius: 16px;
+  border-radius: 15px;
   background: white;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 input:focus,
@@ -79,10 +79,10 @@ select:focus {
   width: 100%;
   border: 0;
   border-radius: 20px;
-  padding: 20px;
+  padding: 19px;
   background: #1976d2;
   color: white;
-  font-size: 24px;
+  font-size: 23px;
   font-weight: bold;
   cursor: pointer;
 }
@@ -91,16 +91,29 @@ select:focus {
   transform: scale(0.99);
 }
 
+.reset-btn {
+  width: 100%;
+  border: 0;
+  border-radius: 16px;
+  padding: 16px;
+  background: #666;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
 #result {
   display: none;
-  margin-top: 25px;
+  margin-top: 24px;
 }
 
 .winner {
   color: #16823b;
-  font-size: 26px;
+  font-size: 25px;
   font-weight: bold;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   line-height: 1.5;
 }
 
@@ -108,21 +121,20 @@ select:focus {
   padding: 18px 0;
   border-bottom: 1px solid #eee;
   line-height: 1.8;
-  font-size: 18px;
+  font-size: 17px;
 }
 
-.result-item:last-of-type {
+.result-item:last-child {
   border-bottom: none;
 }
 
 .rank {
-  font-size: 22px;
+  font-size: 21px;
   font-weight: bold;
-  margin-bottom: 5px;
 }
 
 .cost {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: bold;
 }
 
@@ -142,17 +154,11 @@ select:focus {
   margin-top: 20px;
 }
 
-.reset-btn {
-  width: 100%;
-  border: 0;
-  border-radius: 16px;
-  padding: 16px;
-  background: #666;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 20px;
-  cursor: pointer;
+.version {
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+  margin-top: 25px;
 }
 
 @media (max-width: 480px) {
@@ -161,336 +167,307 @@ select:focus {
   }
 
   h1 {
-    font-size: 30px;
+    font-size: 29px;
   }
 
   .card {
-    padding: 24px 20px;
+    padding: 22px 19px;
   }
 }
 </style>
 </head>
 
-
 <body>
 
 <div class="container">
 
-<h1>🧻 衛生紙比價神器</h1>
+<h1>🧻 衛生紙比價神器 V2</h1>
 
 <div class="subtitle">
 不同品牌、通路、抽數、包數、層數，一次換算比較
 </div>
 
+<div id="products"></div>
 
-<!-- 商品 A -->
-
-<div class="card">
-
-<h2>商品 A</h2>
-
-<label for="brandA">品牌</label>
-
-<select id="brandA">
-<option value="">請選擇品牌</option>
-<option value="舒潔">舒潔</option>
-<option value="五月花">五月花</option>
-<option value="春風">春風</option>
-<option value="得意">得意</option>
-<option value="倍潔雅">倍潔雅</option>
-<option value="柔情">柔情</option>
-<option value="蒲公英">蒲公英</option>
-<option value="唯潔雅">唯潔雅</option>
-<option value="可麗舒">可麗舒</option>
-<option value="Tempo 得寶">Tempo 得寶</option>
-<option value="家樂福">家樂福</option>
-<option value="全聯自有品牌">全聯自有品牌</option>
-<option value="其他品牌">其他品牌</option>
-</select>
-
-
-<label for="storeA">購買通路</label>
-
-<select id="storeA">
-<option value="">請選擇通路</option>
-<option value="全聯">全聯</option>
-<option value="大全聯">大全聯</option>
-<option value="家樂福">家樂福</option>
-<option value="7-ELEVEN">7-ELEVEN</option>
-<option value="全家">全家</option>
-<option value="萊爾富">萊爾富</option>
-<option value="OK超商">OK超商</option>
-<option value="寶雅">寶雅</option>
-<option value="屈臣氏">屈臣氏</option>
-<option value="康是美">康是美</option>
-<option value="好市多 Costco">好市多 Costco</option>
-<option value="momo">momo</option>
-<option value="蝦皮">蝦皮</option>
-<option value="PChome">PChome</option>
-<option value="其他通路">其他通路</option>
-</select>
-
-
-<label for="priceA">售價（元）</label>
-
-<input
-id="priceA"
-type="number"
-inputmode="decimal"
-min="0"
-step="0.01"
-placeholder="例如：299"
->
-
-
-<label for="sheetsA">每包抽數</label>
-
-<input
-id="sheetsA"
-type="number"
-inputmode="numeric"
-min="1"
-step="1"
-placeholder="例如：100"
->
-
-
-<label for="packsA">一串幾包</label>
-
-<input
-id="packsA"
-type="number"
-inputmode="numeric"
-min="1"
-step="1"
-placeholder="例如：12"
->
-
-
-<label for="layersA">層數</label>
-
-<select id="layersA">
-<option value="">請選擇層數</option>
-<option value="2">2 層</option>
-<option value="3">3 層</option>
-<option value="4">4 層</option>
-<option value="5">5 層</option>
-<option value="6">6 層</option>
-</select>
-
-</div>
-
-
-<!-- 商品 B -->
-
-<div class="card">
-
-<h2>商品 B</h2>
-
-<label for="brandB">品牌</label>
-
-<select id="brandB">
-<option value="">請選擇品牌</option>
-<option value="舒潔">舒潔</option>
-<option value="五月花">五月花</option>
-<option value="春風">春風</option>
-<option value="得意">得意</option>
-<option value="倍潔雅">倍潔雅</option>
-<option value="柔情">柔情</option>
-<option value="蒲公英">蒲公英</option>
-<option value="唯潔雅">唯潔雅</option>
-<option value="可麗舒">可麗舒</option>
-<option value="Tempo 得寶">Tempo 得寶</option>
-<option value="家樂福">家樂福</option>
-<option value="全聯自有品牌">全聯自有品牌</option>
-<option value="其他品牌">其他品牌</option>
-</select>
-
-
-<label for="storeB">購買通路</label>
-
-<select id="storeB">
-<option value="">請選擇通路</option>
-<option value="全聯">全聯</option>
-<option value="大全聯">大全聯</option>
-<option value="家樂福">家樂福</option>
-<option value="7-ELEVEN">7-ELEVEN</option>
-<option value="全家">全家</option>
-<option value="萊爾富">萊爾富</option>
-<option value="OK超商">OK超商</option>
-<option value="寶雅">寶雅</option>
-<option value="屈臣氏">屈臣氏</option>
-<option value="康是美">康是美</option>
-<option value="好市多 Costco">好市多 Costco</option>
-<option value="momo">momo</option>
-<option value="蝦皮">蝦皮</option>
-<option value="PChome">PChome</option>
-<option value="其他通路">其他通路</option>
-</select>
-
-
-<label for="priceB">售價（元）</label>
-
-<input
-id="priceB"
-type="number"
-inputmode="decimal"
-min="0"
-step="0.01"
-placeholder="例如：259"
->
-
-
-<label for="sheetsB">每包抽數</label>
-
-<input
-id="sheetsB"
-type="number"
-inputmode="numeric"
-min="1"
-step="1"
-placeholder="例如：110"
->
-
-
-<label for="packsB">一串幾包</label>
-
-<input
-id="packsB"
-type="number"
-inputmode="numeric"
-min="1"
-step="1"
-placeholder="例如：10"
->
-
-
-<label for="layersB">層數</label>
-
-<select id="layersB">
-<option value="">請選擇層數</option>
-<option value="2">2 層</option>
-<option value="3">3 層</option>
-<option value="4">4 層</option>
-<option value="5">5 層</option>
-<option value="6">6 層</option>
-</select>
-
-</div>
-
-
-<!-- 商品 C -->
-
-<div class="card">
-
-<h2>商品 C</h2>
-
-<label for="brandC">品牌</label>
-
-<select id="brandC">
-<option value="">請選擇品牌</option>
-<option value="舒潔">舒潔</option>
-<option value="五月花">五月花</option>
-<option value="春風">春風</option>
-<option value="得意">得意</option>
-<option value="倍潔雅">倍潔雅</option>
-<option value="柔情">柔情</option>
-<option value="蒲公英">蒲公英</option>
-<option value="唯潔雅">唯潔雅</option>
-<option value="可麗舒">可麗舒</option>
-<option value="Tempo 得寶">Tempo 得寶</option>
-<option value="家樂福">家樂福</option>
-<option value="全聯自有品牌">全聯自有品牌</option>
-<option value="其他品牌">其他品牌</option>
-</select>
-
-
-<label for="storeC">購買通路</label>
-
-<select id="storeC">
-<option value="">請選擇通路</option>
-<option value="全聯">全聯</option>
-<option value="大全聯">大全聯</option>
-<option value="家樂福">家樂福</option>
-<option value="7-ELEVEN">7-ELEVEN</option>
-<option value="全家">全家</option>
-<option value="萊爾富">萊爾富</option>
-<option value="OK超商">OK超商</option>
-<option value="寶雅">寶雅</option>
-<option value="屈臣氏">屈臣氏</option>
-<option value="康是美">康是美</option>
-<option value="好市多 Costco">好市多 Costco</option>
-<option value="momo">momo</option>
-<option value="蝦皮">蝦皮</option>
-<option value="PChome">PChome</option>
-<option value="其他通路">其他通路</option>
-</select>
-
-
-<label for="priceC">售價（元）</label>
-
-<input
-id="priceC"
-type="number"
-inputmode="decimal"
-min="0"
-step="0.01"
-placeholder="例如：209"
->
-
-
-<label for="sheetsC">每包抽數</label>
-
-<input
-id="sheetsC"
-type="number"
-inputmode="numeric"
-min="1"
-step="1"
-placeholder="例如：110"
->
-
-
-<label for="packsC">一串幾包</label>
-
-<input
-id="packsC"
-type="number"
-inputmode="numeric"
-min="1"
-step="1"
-placeholder="例如：12"
->
-
-
-<label for="layersC">層數</label>
-
-<select id="layersC">
-<option value="">請選擇層數</option>
-<option value="2">2 層</option>
-<option value="3">3 層</option>
-<option value="4">4 層</option>
-<option value="5">5 層</option>
-<option value="6">6 層</option>
-</select>
-
-</div>
-
-
-<button
-type="button"
-id="compareBtn"
-class="compare-btn"
->
+<button type="button" id="compareBtn" class="compare-btn">
 開始比價
 </button>
 
+<div id="result" class="card"></div>
 
-<div
-id="result"
-class="card"
-></div>
-
+<button type="button" id="resetBtn" class="reset-btn">
+清除全部資料
+</button>
 
 <div class="note">
-※ 比價方式：將不同抽數、包數與層數換
+※ V2 比價方式：售價 ÷（每包抽數 × 包數 × 層數），
+將不同抽數、包裝與層數換算成相同基準後比較。
+<br><br>
+「每抽價格」則不計層數，方便同時查看一般每抽成本。
+</div>
+
+<div class="version">
+衛生紙比價神器 V2
+</div>
+
+</div>
+
+<script>
+
+/* ---------- 品牌 ---------- */
+
+const brands = [
+  "舒潔",
+  "五月花",
+  "春風",
+  "得意",
+  "倍潔雅",
+  "柔情",
+  "蒲公英",
+  "唯潔雅",
+  "可麗舒",
+  "Tempo 得寶",
+  "家樂福",
+  "全聯自有品牌",
+  "其他品牌"
+];
+
+
+/* ---------- 購買通路 ---------- */
+
+const stores = [
+  "全聯",
+  "大全聯",
+  "家樂福",
+  "7-ELEVEN",
+  "全家",
+  "萊爾富",
+  "OK超商",
+  "寶雅",
+  "屈臣氏",
+  "康是美",
+  "好市多 Costco",
+  "momo",
+  "蝦皮",
+  "PChome",
+  "其他通路"
+];
+
+
+/* ---------- 建立商品輸入區 ---------- */
+
+const productContainer = document.getElementById("products");
+
+["A","B","C"].forEach(function(id) {
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  card.innerHTML = `
+    <h2>商品 ${id}</h2>
+
+    <label for="brand${id}">品牌</label>
+
+    <select id="brand${id}">
+      <option value="">請選擇品牌</option>
+      ${brands.map(b =>
+        `<option value="${b}">${b}</option>`
+      ).join("")}
+    </select>
+
+    <label for="store${id}">購買通路</label>
+
+    <select id="store${id}">
+      <option value="">請選擇通路</option>
+      ${stores.map(s =>
+        `<option value="${s}">${s}</option>`
+      ).join("")}
+    </select>
+
+    <label for="price${id}">售價（元）</label>
+
+    <input
+      id="price${id}"
+      type="number"
+      inputmode="decimal"
+      min="0.01"
+      step="0.01"
+      placeholder="例如：299"
+    >
+
+    <label for="sheets${id}">每包抽數</label>
+
+    <input
+      id="sheets${id}"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      step="1"
+      placeholder="例如：100"
+    >
+
+    <label for="packs${id}">一串幾包</label>
+
+    <input
+      id="packs${id}"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      step="1"
+      placeholder="例如：12"
+    >
+
+    <label for="layers${id}">層數</label>
+
+    <select id="layers${id}">
+      <option value="">請選擇層數</option>
+      <option value="2">2 層</option>
+      <option value="3">3 層</option>
+      <option value="4">4 層</option>
+      <option value="5">5 層</option>
+      <option value="6">6 層</option>
+    </select>
+  `;
+
+  productContainer.appendChild(card);
+});
+
+
+/* ---------- 讀取商品 ---------- */
+
+function getProduct(id) {
+
+  const brand =
+    document.getElementById("brand" + id).value;
+
+  const store =
+    document.getElementById("store" + id).value;
+
+  const price =
+    Number(document.getElementById("price" + id).value);
+
+  const sheets =
+    Number(document.getElementById("sheets" + id).value);
+
+  const packs =
+    Number(document.getElementById("packs" + id).value);
+
+  const layers =
+    Number(document.getElementById("layers" + id).value);
+
+  return {
+    id,
+    brand,
+    store,
+    price,
+    sheets,
+    packs,
+    layers
+  };
+}
+
+
+/* ---------- 驗證資料 ---------- */
+
+function isValid(p) {
+
+  return (
+    p.brand !== "" &&
+    p.store !== "" &&
+    Number.isFinite(p.price) &&
+    Number.isFinite(p.sheets) &&
+    Number.isFinite(p.packs) &&
+    Number.isFinite(p.layers) &&
+    p.price > 0 &&
+    p.sheets > 0 &&
+    p.packs > 0 &&
+    p.layers > 0
+  );
+}
+
+
+/* ---------- 開始比價 ---------- */
+
+document
+.getElementById("compareBtn")
+.addEventListener("click", function() {
+
+  const result =
+    document.getElementById("result");
+
+  const products = [
+    getProduct("A"),
+    getProduct("B"),
+    getProduct("C")
+  ];
+
+  const invalid =
+    products.filter(p => !isValid(p));
+
+  if (invalid.length > 0) {
+
+    result.style.display = "block";
+
+    result.innerHTML = `
+      <div class="error">
+      請把商品 A、B、C 的資料全部填寫完成，
+      包含品牌、購買通路、售價、抽數、包數與層數。
+      </div>
+    `;
+
+    result.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+    return;
+  }
+
+
+  /* 計算成本 */
+
+  products.forEach(function(p) {
+
+    p.totalSheets =
+      p.sheets * p.packs;
+
+    p.totalLayerSheets =
+      p.sheets * p.packs * p.layers;
+
+    p.costPerSheet =
+      p.price / p.totalSheets;
+
+    p.costPerLayerSheet =
+      p.price / p.totalLayerSheets;
+
+    p.costPerPack =
+      p.price / p.packs;
+  });
+
+
+  /* 依照層數換算後成本排序 */
+
+  products.sort(function(a,b) {
+    return a.costPerLayerSheet -
+           b.costPerLayerSheet;
+  });
+
+
+  const winner = products[0];
+
+
+  /* 顯示結果 */
+
+  let html = `
+    <div class="winner">
+      🏆 最划算：商品 ${winner.id}<br>
+      ${winner.brand}｜${winner.store}
+    </div>
+  `;
+
+
+  products.forEach(function(p,index) {
+
+    let medal = "";
+
+    if (index === 0) medal = "🥇";
