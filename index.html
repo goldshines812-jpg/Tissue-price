@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#1976d2">
-<title>衛生紙比價神器 V2.7.2</title>
+<title>衛生紙比價神器 V2.8.1</title>
 
 <style>
 *{box-sizing:border-box}
@@ -216,7 +216,7 @@ button{cursor:pointer}
 <body>
 <div class="container">
 
-<h1>🧻 衛生紙比價神器 V2.7.2</h1>
+<h1>🧻 衛生紙比價神器 V2.8.1</h1>
 <div class="subtitle">促銷換算・價格走勢・歷史價格一鍵整理</div>
 
 <div class="card">
@@ -539,13 +539,13 @@ button{cursor:pointer}
 
 
 <div class="note" style="margin-top:12px">
-V2.7.2 商品資料查詢原則：優先使用本機已確認資料與具公開介面的開放資料來源。
-本版不會自動爬取購物網站，也不會繞過登入、付費牆或技術限制。
+V2.8.1 商品資料查詢原則：優先使用本機已確認資料與具公開介面的開放資料來源。
+本版可查詢 Open Products Facts、Open Food Facts 與 UPCitemdb API，但第三方結果預設只供即時顯示，不直接寫入核心資料庫。核心資料採授權閘門：來源與授權相容性通過後才允許保存。
 GS1 Taiwan 作為 GTIN 標準與驗證的重要來源；在未確認可供本 APP 程式化再利用的授權/API 前，不直接自動抓取其資料。
 </div>
 
 <div class="footer">
-衛生紙比價神器 V2.7.2｜最新版
+衛生紙比價神器 V2.8.1｜最新版
 </div>
 
 </div>
@@ -594,7 +594,7 @@ el("threeBtn").addEventListener("click",function(){
 
 /* 自訂品牌、通路、促銷欄位 */
 
-/* ===== V2.7.2 合法／開放資料來源查詢 =====
+/* ===== V2.8.1 合法／開放資料來源查詢 =====
    順序：
    1. 本機已確認商品快取（使用者裝置 localStorage）
    2. Open Products Facts 公開 API
@@ -698,31 +698,86 @@ function cacheCurrentProduct(id,source,sourceUrl){
   saveProductCache(cache);
 }
 
+
+function normalizeCandidate(d){
+  if(!d)return null;
+  var text=[d.name||"",d.brand||"",d.rawText||""].join(" ");
+  var specs=inferTissueSpecs(text);
+  d.sheets=d.sheets||specs.sheets||0;
+  d.packs=d.packs||specs.packs||0;
+  d.layers=d.layers||specs.layers||0;
+  d.score=(d.name?4:0)+(d.brand?2:0)+(d.sheets?2:0)+(d.packs?2:0)+(d.layers?2:0);
+  return d;
+}
+
+async function fetchJson(url,options,timeoutMs){
+  var controller=new AbortController();
+  var timer=setTimeout(function(){controller.abort();},timeoutMs||7000);
+  try{
+    var opt=Object.assign({},options||{});
+    opt.signal=controller.signal;
+    var res=await fetch(url,opt);
+    if(res.status===404)return null;
+    if(!res.ok)throw new Error("HTTP "+res.status);
+    return await res.json();
+  }finally{ clearTimeout(timer); }
+}
+
 async function queryOpenProductsFacts(barcode){
   var url="https://world.openproductsfacts.org/api/v2/product/"+encodeURIComponent(barcode)+".json";
-  var res=await fetch(url,{headers:{"Accept":"application/json"}});
-  if(!res.ok)throw new Error("HTTP "+res.status);
-  var j=await res.json();
+  var j=await fetchJson(url,{headers:{"Accept":"application/json"}},6500);
   if(!j || j.status!==1 || !j.product)return null;
   var p=j.product;
   var name=p.product_name_zh || p.product_name || p.generic_name_zh || p.generic_name || "";
   var brand=p.brands || "";
-  var text=[
-    name, p.quantity||"", p.packaging_text_zh||"", p.packaging_text||"",
-    p.categories_zh||"", p.categories||""
-  ].join(" ");
-  var specs=inferTissueSpecs(text);
-  return {
-    barcode:barcode,
-    name:name,
-    brand:brand.split(",")[0].trim(),
-    sheets:specs.sheets,
-    packs:specs.packs,
-    layers:specs.layers,
+  var text=[name,p.quantity||"",p.packaging_text_zh||"",p.packaging_text||"",p.categories_zh||"",p.categories||""].join(" ");
+  return normalizeCandidate({
+    barcode:barcode,name:name,brand:brand.split(",")[0].trim(),
     source:"Open Products Facts",
     sourceUrl:"https://world.openproductsfacts.org/product/"+encodeURIComponent(barcode),
     rawText:text
-  };
+  });
+}
+
+async function queryOpenFoodFacts(barcode){
+  var url="https://world.openfoodfacts.org/api/v2/product/"+encodeURIComponent(barcode)+".json";
+  var j=await fetchJson(url,{headers:{"Accept":"application/json"}},6500);
+  if(!j || j.status!==1 || !j.product)return null;
+  var p=j.product;
+  var name=p.product_name_zh || p.product_name || p.generic_name_zh || p.generic_name || "";
+  var brand=p.brands || "";
+  var text=[name,p.quantity||"",p.packaging_text_zh||"",p.packaging_text||"",p.categories_zh||"",p.categories||""].join(" ");
+  return normalizeCandidate({
+    barcode:barcode,name:name,brand:brand.split(",")[0].trim(),
+    source:"Open Food Facts",
+    sourceUrl:"https://world.openfoodfacts.org/product/"+encodeURIComponent(barcode),
+    rawText:text
+  });
+}
+
+async function queryUPCitemdb(barcode){
+  var url="https://api.upcitemdb.com/prod/trial/lookup?upc="+encodeURIComponent(barcode);
+  var j=await fetchJson(url,{headers:{"Accept":"application/json"}},7000);
+  if(!j || !Array.isArray(j.items) || !j.items.length)return null;
+  var p=j.items[0]||{};
+  var name=p.title||"";
+  var brand=p.brand||"";
+  var text=[name,brand,p.description||"",p.category||"",p.size||""].join(" ");
+  return normalizeCandidate({
+    barcode:barcode,name:name,brand:brand,
+    source:"UPCitemdb",
+    sourceUrl:"https://www.upcitemdb.com/upc/"+encodeURIComponent(barcode),
+    rawText:text
+  });
+}
+
+async function queryOneSource(label,fn,barcode){
+  try{
+    var d=await fn(barcode);
+    return {label:label,ok:!!d,data:d,error:""};
+  }catch(e){
+    return {label:label,ok:false,data:null,error:(e&&e.message)||"查詢失敗"};
+  }
 }
 
 async function lookupBarcode(id,automatic){
@@ -742,30 +797,44 @@ async function lookupBarcode(id,automatic){
     return;
   }
 
-  setLookupStatus(id,"🔎 正在查詢開放商品資料…","");
+  setLookupStatus(id,"🔎 V2.8.1 多來源並行查詢中：Open Products Facts／Open Food Facts／UPCitemdb…","");
   setSourceInfo(id,"","");
-  try{
-    var d=await queryOpenProductsFacts(barcode);
-    if(d){
-      applyProductData(id,d);
-      var complete=d.name && d.sheets && d.packs && d.layers;
-      if(complete){
-        setLookupStatus(id,"✅ 找到商品資料，已自動填入。請快速確認規格是否與包裝一致。","ok");
-      }else{
-        setLookupStatus(id,"⚠️ 找到部分商品資料，已填入可確認的欄位；缺少的規格請以包裝標示為準。","warn");
-      }
-      setSourceInfo(id,d.source,d.sourceUrl);
-      /* 開放來源結果先快取；使用者之後修改並比價/儲存時會以確認後資料覆蓋 */
-      var c=loadProductCache(); d.confirmed=false; c[barcode]=d; saveProductCache(c);
-      return;
+
+  var results=await Promise.all([
+    queryOneSource("Open Products Facts",queryOpenProductsFacts,barcode),
+    queryOneSource("Open Food Facts",queryOpenFoodFacts,barcode),
+    queryOneSource("UPCitemdb",queryUPCitemdb,barcode)
+  ]);
+
+  var found=results.filter(function(r){return r.ok && r.data;}).map(function(r){return r.data;});
+  found.sort(function(a,b){return (b.score||0)-(a.score||0);});
+
+  if(found.length){
+    var best=found[0];
+    applyProductData(id,best);
+    var complete=best.name && best.sheets && best.packs && best.layers;
+    var sourceNames=found.map(function(x){return x.source;}).join("、");
+    if(complete){
+      setLookupStatus(id,"✅ 多來源查詢完成，已暫時帶入商品資料。第三方資料不會自動寫入核心資料庫；請核對包裝規格。","ok");
+    }else{
+      setLookupStatus(id,"⚠️ 已找到部分第三方資料，僅供本次查詢顯示，不會自動進入核心資料庫。缺少規格請以包裝為準。","warn");
     }
-    setLookupStatus(id,"⚠️ 開放資料來源目前查不到這個條碼。你仍可手動填寫；之後本機會記住。","warn");
-  }catch(e){
-    setLookupStatus(id,"⚠️ 商品資料查詢失敗："+(e&&e.message?e.message:"網路或資料來源無回應")+"。掃描與手動比價仍可使用。","warn");
+    setSourceInfo(id,sourceNames,best.sourceUrl);
+    // V2.8.1 授權閘門：
+    // 第三方 API 回傳資料只供本次查詢顯示，不直接寫入核心資料庫。
+    // 只有來源授權已審核且允許本專案的保存/再利用方式，才可進核心庫。
+    best.confirmed=false;
+    best.licenseGate="external-display-only";
+    best.coreDbEligible=false;
+    return;
   }
+
+  var detail=results.map(function(r){
+    return r.label+"："+(r.error ? r.error : "查無資料");
+  }).join(" ｜ ");
+  setLookupStatus(id,"⚠️ 三個資料來源都沒有找到這個條碼。掃描功能正常；可先手動填一次，之後本機會記住。","warn");
+  setSourceInfo(id,detail,"");
 }
-
-
 
 ["A","B","C"].forEach(function(id){
   var barcodeInput=el("barcode"+id);
@@ -1345,7 +1414,7 @@ el("clearBtn").addEventListener("click",function(){
 updateCount();
 
 
-/* ===== V2.7.2 條碼掃描：原生 BarcodeDetector + html5-qrcode 備援 ===== */
+/* ===== V2.8.1 條碼掃描：原生 BarcodeDetector + html5-qrcode 備援 ===== */
 var scanSessions={A:null,B:null,C:null};
 
 function scanStatus(id,msg,ok){
