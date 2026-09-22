@@ -1,246 +1,396 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>衛生紙比價神器</title>
-<link rel="manifest" href="manifest.json">
-<style>
-* {
-  box-sizing: border-box;
-}
+  <title>衛生紙比價神器</title>
 
-body {
-  margin: 0;
-  font-family: Arial, "Microsoft JhengHei", sans-serif;
-  background: #f5f7fa;
-  color: #222;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-.container {
-  max-width: 650px;
-  margin: auto;
-  padding: 28px 18px 60px;
-}
+    body {
+      margin: 0;
+      font-family: Arial, "Microsoft JhengHei", sans-serif;
+      background: #f5f7fa;
+      color: #222;
+    }
 
-h1 {
-  font-size: 34px;
-  margin-bottom: 5px;
-}
+    .container {
+      max-width: 650px;
+      margin: auto;
+      padding: 28px 18px 60px;
+    }
 
-.subtitle {
-  color: #777;
-  margin-bottom: 28px;
-}
+    h1 {
+      font-size: 34px;
+      margin-bottom: 5px;
+    }
 
-.card {
-  background: white;
-  padding: 24px;
-  border-radius: 22px;
-  margin-bottom: 22px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-}
+    .subtitle {
+      color: #777;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
 
-.card h2 {
-  margin-top: 0;
-}
+    .card {
+      background: white;
+      padding: 24px;
+      border-radius: 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    }
 
-label {
-  display: block;
-  font-weight: bold;
-  margin-top: 18px;
-  margin-bottom: 8px;
-}
+    .card h2 {
+      margin-top: 0;
+      font-size: 28px;
+    }
 
-input,
-select {
-  width: 100%;
-  padding: 16px;
-  font-size: 18px;
-  border: 1px solid #ccc;
-  border-radius: 14px;
-}
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
 
-button {
-  width: 100%;
-  padding: 19px;
-  border: none;
-  border-radius: 18px;
-  background: #1976d2;
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-}
+    input,
+    select {
+      width: 100%;
+      padding: 16px;
+      font-size: 18px;
+      border: 1px solid #ccc;
+      border-radius: 14px;
+      background: white;
+    }
 
-.result {
-  display: none;
-  background: white;
-  margin-top: 25px;
-  padding: 24px;
-  border-radius: 22px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-}
+    button {
+      width: 100%;
+      padding: 19px;
+      border: none;
+      border-radius: 18px;
+      background: #1976d2;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-.winner {
-  background: #e8f5e9;
-  padding: 16px;
-  border-radius: 14px;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
+    button:active {
+      transform: scale(0.99);
+    }
 
-.price {
-  font-size: 22px;
-  font-weight: bold;
-  color: #1976d2;
-}
+    .result {
+      display: none;
+      background: white;
+      margin-top: 25px;
+      padding: 24px;
+      border-radius: 22px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    }
 
-.note {
-  color: #777;
-  font-size: 14px;
-  margin-top: 20px;
-  line-height: 1.6;
-}
-</style>
+    .winner {
+      background: #e8f5e9;
+      padding: 18px;
+      border-radius: 14px;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .product-result {
+      padding: 16px 0;
+    }
+
+    .product-result h3 {
+      margin-bottom: 8px;
+    }
+
+    .store {
+      color: #555;
+      font-weight: bold;
+    }
+
+    .price {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid #ddd;
+      margin: 12px 0;
+    }
+
+    .note {
+      margin-top: 22px;
+      color: #777;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .error {
+      background: #fff3e0;
+      padding: 16px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>🧻 衛生紙比價神器</h1>
+  <h1>🧻 衛生紙比價神器</h1>
 
-<div class="subtitle">
-不同抽數、包數、層數，也能公平比較
-</div>
-
-<div class="card">
-<h2>商品 A</h2>
-<label>商品名稱</label>
-<input id="nameA" type="text" placeholder="例如：品牌 A">
-<label>購買通路</label>
-<select id="storeA">
-  <option value="">請選擇通路</option>
-  <option value="全聯">全聯</option>
-  <option value="大全聯">大全聯</option>
-  <option value="家樂福">家樂福</option>
-  <option value="7-ELEVEN">7-ELEVEN</option>
-  <option value="全家">全家</option>
-</select>
+  <div class="subtitle">
+    不同抽數、包數、層數，也能公平比較
+  </div>
 
 
-  
+  <!-- 商品 A -->
 
-<label>售價（元）</label>
-<input id="priceA" type="number" inputmode="decimal">
+  <div class="card">
 
-<label>每包抽數</label>
-<input id="sheetsA" type="number" inputmode="numeric">
+    <h2>商品 A</h2>
 
-<label>一串幾包</label>
-<input id="packsA" type="number" inputmode="numeric">
+    <label for="storeA">購買通路</label>
+    <select id="storeA">
+      <option value="">請選擇通路</option>
+      <option value="全聯">全聯</option>
+      <option value="大全聯">大全聯</option>
+      <option value="家樂福">家樂福</option>
+      <option value="7-ELEVEN">7-ELEVEN</option>
+      <option value="全家">全家</option>
+      <option value="其他">其他</option>
+    </select>
 
-<label>幾層</label>
-<input id="layersA" type="number" inputmode="numeric">
-</div>
+    <label for="nameA">商品名稱</label>
+    <input
+      id="nameA"
+      type="text"
+      placeholder="例如：品牌 A"
+    >
 
+    <label for="priceA">售價（元）</label>
+    <input
+      id="priceA"
+      type="number"
+      inputmode="decimal"
+      min="0"
+      step="0.01"
+      placeholder="例如：199"
+    >
 
-<div class="card">
-<h2>商品 B</h2>
+    <label for="sheetsA">每包抽數</label>
+    <input
+      id="sheetsA"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      placeholder="例如：100"
+    >
 
-<label>商品名稱</label>
-<input id="nameB" type="text" placeholder="例如：品牌 B">
-<label>購買通路</label>
-<select id="storeB">
-  <option value="">請選擇通路</option>
-  <option value="全聯">全聯</option>
-  <option value="大全聯">大全聯</option>
-  <option value="家樂福">家樂福</option>
-  <option value="7-ELEVEN">7-ELEVEN</option>
-  <option value="全家">全家</option>
-</select>
-  
+    <label for="packsA">一串幾包</label>
+    <input
+      id="packsA"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      placeholder="例如：12"
+    >
 
-<label>售價（元）</label>
-<input id="priceB" type="number" inputmode="decimal">
+    <label for="layersA">幾層</label>
+    <input
+      id="layersA"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      placeholder="例如：3"
+    >
 
-<label>每包抽數</label>
-<input id="sheetsB" type="number" inputmode="numeric">
-
-<label>一串幾包</label>
-<input id="packsB" type="number" inputmode="numeric">
-
-<label>幾層</label>
-<input id="layersB" type="number" inputmode="numeric">
-</div>
-
-
-<div class="card">
-<h2>商品 C</h2>
-
-<label>商品名稱</label>
-<input id="nameC" type="text" placeholder="例如：品牌 C">
-<label>購買通路</label>
-<select id="storeC">
-  <option value="">請選擇通路</option>
-  <option value="全聯">全聯</option>
-  <option value="大全聯">大全聯</option>
-  <option value="家樂福">家樂福</option>
-  <option value="7-ELEVEN">7-ELEVEN</option>
-  <option value="全家">全家</option>
-</select>
-  
-<label>售價（元）</label>
-<input id="priceC" type="number" inputmode="decimal">
-
-<label>每包抽數</label>
-<input id="sheetsC" type="number" inputmode="numeric">
-
-<label>一串幾包</label>
-<input id="packsC" type="number" inputmode="numeric">
-
-<label>幾層</label>
-<input id="layersC" type="number" inputmode="numeric">
-</div>
+  </div>
 
 
-<button id="compareButton" type="button">
-開始比價
-</button>
+  <!-- 商品 B -->
 
-<div id="result" class="result"></div>
+  <div class="card">
 
-<div class="note">
-※ 比價依輸入的售價與商品規格換算，實際商品內容及售價請以賣場標示為準。
-</div>
+    <h2>商品 B</h2>
+
+    <label for="storeB">購買通路</label>
+    <select id="storeB">
+      <option value="">請選擇通路</option>
+      <option value="全聯">全聯</option>
+      <option value="大全聯">大全聯</option>
+      <option value="家樂福">家樂福</option>
+      <option value="7-ELEVEN">7-ELEVEN</option>
+      <option value="全家">全家</option>
+      <option value="其他">其他</option>
+    </select>
+
+    <label for="nameB">商品名稱</label>
+    <input
+      id="nameB"
+      type="text"
+      placeholder="例如：品牌 B"
+    >
+
+    <label for="priceB">售價（元）</label>
+    <input
+      id="priceB"
+      type="number"
+      inputmode="decimal"
+      min="0"
+      step="0.01"
+      placeholder="例如：239"
+    >
+
+    <label for="sheetsB">每包抽數</label>
+    <input
+      id="sheetsB"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      placeholder="例如：110"
+    >
+
+    <label for="packsB">一串幾包</label>
+    <input
+      id="packsB"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      placeholder="例如：10"
+    >
+
+    <label for="layersB">幾層</label>
+    <input
+      id="layersB"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      placeholder="例如：3"
+    >
+
+  </div>
+
+
+  <!-- 商品 C -->
+
+  <div class="card">
+
+    <h2>商品 C</h2>
+
+    <label for="storeC">購買通路</label>
+    <select id="storeC">
+      <option value="">請選擇通路</option>
+      <option value="全聯">全聯</option>
+      <option value="大全聯">大全聯</option>
+      <option value="家樂福">家樂福</option>
+      <option value="7-ELEVEN">7-ELEVEN</option>
+      <option value="全家">全家</option>
+      <option value="其他">其他</option>
+    </select>
+
+    <label for="nameC">商品名稱</label>
+    <input
+      id="nameC"
+      type="text"
+      placeholder="例如：品牌 C"
+    >
+
+    <label for="priceC">售價（元）</label>
+    <input
+      id="priceC"
+      type="number"
+      inputmode="decimal"
+      min="0"
+      step="0.01"
+      placeholder="例如：299"
+    >
+
+    <label for="sheetsC">每包抽數</label>
+    <input
+      id="sheetsC"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      placeholder="例如：120"
+    >
+
+    <label for="packsC">一串幾包</label>
+    <input
+      id="packsC"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      placeholder="例如：12"
+    >
+
+    <label for="layersC">幾層</label>
+    <input
+      id="layersC"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      placeholder="例如：3"
+    >
+
+  </div>
+
+
+  <button id="compareButton" type="button">
+    開始比價
+  </button>
+
+
+  <div id="result" class="result"></div>
+
+
+  <div class="note">
+    ※ 比價依照使用者輸入的售價與商品規格換算。
+    實際商品內容、促銷活動與售價請以各通路現場或官方資訊為準。
+  </div>
 
 </div>
 
 
 <script>
 
+function getValue(id) {
+  return document.getElementById(id);
+}
+
+
 function getProduct(letter) {
 
+  const store =
+    getValue("store" + letter).value;
+
   const nameInput =
-    document.getElementById("name" + letter).value.trim();
+    getValue("name" + letter).value.trim();
 
   const name =
     nameInput || ("商品 " + letter);
 
   const price =
-    Number(document.getElementById("price" + letter).value);
+    Number(getValue("price" + letter).value);
 
   const sheets =
-    Number(document.getElementById("sheets" + letter).value);
+    Number(getValue("sheets" + letter).value);
 
   const packs =
-    Number(document.getElementById("packs" + letter).value);
+    Number(getValue("packs" + letter).value);
 
   const layers =
-    Number(document.getElementById("layers" + letter).value);
+    Number(getValue("layers" + letter).value);
+
 
   if (
     !Number.isFinite(price) ||
@@ -255,24 +405,128 @@ function getProduct(letter) {
     return null;
   }
 
-  const totalSheets = sheets * packs;
-const pricePerPack = price / packs;
-  const pricePer100 =
-    (price / totalSheets) * 100;
+
+  const totalSheets =
+    sheets * packs;
 
   const totalLayerSheets =
     totalSheets * layers;
 
+  const pricePerPack =
+    price / packs;
+
+  const pricePer100 =
+    (price / totalSheets) * 100;
+
   const pricePer1000Layer =
     (price / totalLayerSheets) * 1000;
 
+
   return {
+
+    letter: letter,
+
+    store: store || "未選擇通路",
+
     name: name,
+
+    price: price,
+
+    sheets: sheets,
+
+    packs: packs,
+
+    layers: layers,
+
     totalSheets: totalSheets,
+
+    totalLayerSheets: totalLayerSheets,
+
     pricePerPack: pricePerPack,
+
     pricePer100: pricePer100,
+
     pricePer1000Layer: pricePer1000Layer
+
   };
+}
+
+
+function makeResult(product, rank) {
+
+  let medal = "";
+
+  if (rank === 1) {
+    medal = "🥇 ";
+  }
+
+  if (rank === 2) {
+    medal = "🥈 ";
+  }
+
+  if (rank === 3) {
+    medal = "🥉 ";
+  }
+
+
+  return `
+    <div class="product-result">
+
+      <h3>
+        ${medal}${escapeHTML(product.name)}
+      </h3>
+
+      <p class="store">
+        🛒 購買通路：
+        ${escapeHTML(product.store)}
+      </p>
+
+      <p>
+        售價：NT$ ${product.price.toFixed(2)}
+      </p>
+
+      <p>
+        規格：
+        ${product.sheets.toLocaleString()} 抽 ×
+        ${product.packs.toLocaleString()} 包 ×
+        ${product.layers.toLocaleString()} 層
+      </p>
+
+      <p>
+        總抽數：
+        ${product.totalSheets.toLocaleString()} 抽
+      </p>
+
+      <p>
+        每包：
+        NT$ ${product.pricePerPack.toFixed(2)}
+      </p>
+
+      <p>
+        每 100 抽：
+        NT$ ${product.pricePer100.toFixed(2)}
+      </p>
+
+      <p>
+        每 1,000 層抽：
+        <span class="price">
+          NT$ ${product.pricePer1000Layer.toFixed(2)}
+        </span>
+      </p>
+
+    </div>
+  `;
+}
+
+
+function escapeHTML(text) {
+
+  const div =
+    document.createElement("div");
+
+  div.textContent = text;
+
+  return div.innerHTML;
 }
 
 
@@ -282,82 +536,123 @@ function compareProducts() {
   const B = getProduct("B");
   const C = getProduct("C");
 
+  const result =
+    getValue("result");
+
+
   if (!A || !B || !C) {
-    alert("請把商品 A、商品 B、商品 C 的售價、抽數、包數、層數都填完整，而且數字必須大於 0。");
+
+    result.innerHTML = `
+      <div class="error">
+        ⚠️ 請把商品 A、商品 B、商品 C 的
+        「售價、每包抽數、一串幾包、幾層」
+        全部填入大於 0 的數字。
+      </div>
+    `;
+
+    result.style.display = "block";
+
+    result.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
     return;
   }
 
+
   const products = [A, B, C];
 
+
   products.sort(function(a, b) {
-    return a.pricePer1000Layer - b.pricePer1000Layer;
+
+    return (
+      a.pricePer1000Layer -
+      b.pricePer1000Layer
+    );
+
   });
 
-  const cheapest = products[0];
-  const second = products[1];
 
-  const percent =
-    ((second.pricePer1000Layer -
-      cheapest.pricePer1000Layer) /
-      second.pricePer1000Layer) * 100;
+  const cheapest =
+    products[0];
 
-  const result =
-    document.getElementById("result");
+  const second =
+    products[1];
 
-  result.innerHTML =
-    '<div class="winner">🏆 ' +
-    cheapest.name +
-    ' 最便宜，比第二便宜約 ' +
-    percent.toFixed(1) +
-    '%</div>' +
 
-    makeResult(A) +
-    '<hr>' +
-    makeResult(B) +
-    '<hr>' +
-    makeResult(C);
+  let percent = 0;
 
-  result.style.display = "block";
+  if (second.pricePer1000Layer > 0) {
+
+    percent =
+      (
+        (
+          second.pricePer1000Layer -
+          cheapest.pricePer1000Layer
+        )
+        /
+        second.pricePer1000Layer
+      )
+      * 100;
+
+  }
+
+
+  result.innerHTML = `
+
+    <div class="winner">
+
+      🏆 最划算：
+      ${escapeHTML(cheapest.name)}
+
+      <br>
+
+      🛒 ${escapeHTML(cheapest.store)}
+
+      <br>
+
+      比第二名約便宜
+      ${percent.toFixed(1)}%
+
+    </div>
+
+    ${makeResult(products[0], 1)}
+
+    <hr>
+
+    ${makeResult(products[1], 2)}
+
+    <hr>
+
+    ${makeResult(products[2], 3)}
+
+  `;
+
+
+  result.style.display =
+    "block";
+
 
   result.scrollIntoView({
+
     behavior: "smooth",
+
     block: "start"
+
   });
-}
 
-
-function makeResult(product) {
-
-  return (
-    '<h3>' + product.name + '</h3>' +
-    '<p>總抽數：' +
-    product.totalSheets.toLocaleString() +
-    ' 抽</p>' +
-'<p>每包：NT$ ' +
-product.pricePerPack.toFixed(2) + '</p>' +
-    '<p>每 100 抽：' +
-    '<span class="price">NT$ ' +
-    product.pricePer100.toFixed(2) +
-    '</span></p>' +
-
-    '<p>每 1,000 層抽：<span class="price">NT$ ' +
-    product.pricePer1000Layer.toFixed(2) +
-    '</span></p>'
-  );
 }
 
 
 document
   .getElementById("compareButton")
-  .addEventListener("click", compareProducts);
+  .addEventListener(
+    "click",
+    compareProducts
+  );
 
 </script>
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function () {
-    navigator.serviceWorker.register("./sw.js");
-  });
-}
-</script>
+
 </body>
 </html>
