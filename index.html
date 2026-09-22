@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#1976d2">
-<title>衛生紙比價神器 V2.7</title>
+<title>衛生紙比價神器 V2.7.1</title>
 
 <style>
 *{box-sizing:border-box}
@@ -216,7 +216,7 @@ button{cursor:pointer}
 <body>
 <div class="container">
 
-<h1>🧻 衛生紙比價神器 V2.7</h1>
+<h1>🧻 衛生紙比價神器 V2.7.1</h1>
 <div class="subtitle">促銷換算・價格走勢・歷史價格一鍵整理</div>
 
 <div class="card">
@@ -539,13 +539,13 @@ button{cursor:pointer}
 
 
 <div class="note" style="margin-top:12px">
-V2.7 商品資料查詢原則：優先使用本機已確認資料與具公開介面的開放資料來源。
+V2.7.1 商品資料查詢原則：優先使用本機已確認資料與具公開介面的開放資料來源。
 本版不會自動爬取購物網站，也不會繞過登入、付費牆或技術限制。
 GS1 Taiwan 作為 GTIN 標準與驗證的重要來源；在未確認可供本 APP 程式化再利用的授權/API 前，不直接自動抓取其資料。
 </div>
 
 <div class="footer">
-衛生紙比價神器 V2.7｜最新版
+衛生紙比價神器 V2.7.1｜最新版
 </div>
 
 </div>
@@ -594,7 +594,7 @@ el("threeBtn").addEventListener("click",function(){
 
 /* 自訂品牌、通路、促銷欄位 */
 
-/* ===== V2.7 合法／開放資料來源查詢 =====
+/* ===== V2.7.1 合法／開放資料來源查詢 =====
    順序：
    1. 本機已確認商品快取（使用者裝置 localStorage）
    2. Open Products Facts 公開 API
@@ -692,7 +692,8 @@ function cacheCurrentProduct(id,source,sourceUrl){
     layers:num(el("layers"+id)?el("layers"+id).value:0),
     source:source||"使用者確認",
     sourceUrl:sourceUrl||"",
-    savedAt:new Date().toISOString()
+    savedAt:new Date().toISOString(),
+    confirmed:true
   };
   saveProductCache(cache);
 }
@@ -734,7 +735,7 @@ async function lookupBarcode(id,automatic){
   input.value=barcode;
 
   var cache=loadProductCache();
-  if(cache[barcode]){
+  if(cache[barcode] && cache[barcode].confirmed===true){
     applyProductData(id,cache[barcode]);
     setLookupStatus(id,"✅ 已從本機已確認商品資料自動帶入。","ok");
     setSourceInfo(id,cache[barcode].source||"本機已確認資料",cache[barcode].sourceUrl||"");
@@ -755,26 +756,31 @@ async function lookupBarcode(id,automatic){
       }
       setSourceInfo(id,d.source,d.sourceUrl);
       /* 開放來源結果先快取；使用者之後修改並比價/儲存時會以確認後資料覆蓋 */
-      var c=loadProductCache(); c[barcode]=d; saveProductCache(c);
+      var c=loadProductCache(); d.confirmed=false; c[barcode]=d; saveProductCache(c);
       return;
     }
     setLookupStatus(id,"⚠️ 開放資料來源目前查不到這個條碼。你仍可手動填寫；之後本機會記住。","warn");
   }catch(e){
-    setLookupStatus(id,"⚠️ 網路商品資料查詢暫時失敗；掃描與手動比價仍可正常使用。","warn");
+    setLookupStatus(id,"⚠️ 商品資料查詢失敗："+(e&&e.message?e.message:"網路或資料來源無回應")+"。掃描與手動比價仍可使用。","warn");
   }
 }
 
-/* 成功掃描後自動查資料：掛接既有 scanSuccess */
-if(typeof scanSuccess==="function"){
-  var _scanSuccessV26=scanSuccess;
-  scanSuccess=function(id,value){
-    _scanSuccessV26(id,value);
-    setTimeout(function(){ lookupBarcode(id,true); },100);
-  };
-}
+
 
 ["A","B","C"].forEach(function(id){
-  if(el("lookupBtn"+id)) el("lookupBtn"+id).addEventListener("click",function(){lookupBarcode(id,false);});
+  var barcodeInput=el("barcode"+id);
+  if(barcodeInput){
+    barcodeInput.addEventListener("keydown",function(e){
+      if(e.key==="Enter"){ e.preventDefault(); lookupBarcode(id,false); }
+    });
+  }
+
+  if(el("lookupBtn"+id)){
+    el("lookupBtn"+id).addEventListener("click",function(){
+      setLookupStatus(id,"🔎 準備查詢商品資料…","");
+      lookupBarcode(id,false);
+    });
+  }
 
 
  el("brand"+id).addEventListener("change",function(){
@@ -1339,7 +1345,7 @@ el("clearBtn").addEventListener("click",function(){
 updateCount();
 
 
-/* ===== V2.7 條碼掃描：原生 BarcodeDetector + html5-qrcode 備援 ===== */
+/* ===== V2.7.1 條碼掃描：原生 BarcodeDetector + html5-qrcode 備援 ===== */
 var scanSessions={A:null,B:null,C:null};
 
 function scanStatus(id,msg,ok){
@@ -1356,6 +1362,8 @@ function acceptBarcode(id,code){
   scanStatus(id,"✅ 掃描成功："+code,true);
   stopScan(id);
   try{localStorage.setItem("tissueLastBarcode"+id,code);}catch(e){}
+  setLookupStatus(id,"🔎 條碼已取得，正在自動查詢商品資料…","");
+  setTimeout(function(){ lookupBarcode(id,true); },150);
 }
 
 async function stopScan(id){
