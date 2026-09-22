@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#1976d2">
-<title>衛生紙比價神器 V2.6</title>
+<title>衛生紙比價神器 V2.7</title>
 
 <style>
 *{box-sizing:border-box}
@@ -184,6 +184,30 @@ button{cursor:pointer}
 .scan-ok{color:#16823b;font-weight:bold}
 .barcode-input{margin-top:8px}
 
+
+.lookup-box{
+  margin:14px 0 18px;
+  padding:14px;
+  border-radius:16px;
+  background:#f4fbf6;
+  border:1px solid #cfe9d5;
+}
+.lookup-btn{
+  width:100%;
+  min-height:54px;
+  border:0;
+  border-radius:14px;
+  background:#16823b;
+  color:#fff;
+  font-size:17px;
+  font-weight:bold;
+  padding:12px;
+}
+.lookup-status{margin-top:10px;line-height:1.6;color:#315d3d;font-size:14px}
+.source-info{margin-top:8px;line-height:1.6;color:#666;font-size:13px}
+.lookup-ok{color:#16823b;font-weight:bold}
+.lookup-warn{color:#9a6500;font-weight:bold}
+
 </style>
 
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
@@ -192,7 +216,7 @@ button{cursor:pointer}
 <body>
 <div class="container">
 
-<h1>🧻 衛生紙比價神器 V2.6</h1>
+<h1>🧻 衛生紙比價神器 V2.7</h1>
 <div class="subtitle">促銷換算・價格走勢・歷史價格一鍵整理</div>
 
 <div class="card">
@@ -218,6 +242,13 @@ button{cursor:pointer}
   <div id="scanStatusA" class="scan-status">可直接掃描手上商品的 EAN／UPC 條碼。</div>
 </div>
 
+
+
+<div class="lookup-box">
+  <button id="lookupBtnA" class="lookup-btn" type="button">🌐 用條碼查合法／開放商品資料</button>
+  <div id="lookupStatusA" class="lookup-status">掃描後會先查本機已確認資料，再查開放商品資料來源。</div>
+  <div id="sourceInfoA" class="source-info"></div>
+</div>
 
 <label>商品名稱／品項</label>
 <input id="nameA" placeholder="例如：棉柔舒適抽取衛生紙">
@@ -302,6 +333,13 @@ button{cursor:pointer}
 </div>
 
 
+
+<div class="lookup-box">
+  <button id="lookupBtnB" class="lookup-btn" type="button">🌐 用條碼查合法／開放商品資料</button>
+  <div id="lookupStatusB" class="lookup-status">掃描後會先查本機已確認資料，再查開放商品資料來源。</div>
+  <div id="sourceInfoB" class="source-info"></div>
+</div>
+
 <label>商品名稱／品項</label>
 <input id="nameB" placeholder="例如：棉柔舒適抽取衛生紙">
 
@@ -385,6 +423,13 @@ button{cursor:pointer}
   <div id="scanStatusC" class="scan-status">可直接掃描手上商品的 EAN／UPC 條碼。</div>
 </div>
 
+
+
+<div class="lookup-box">
+  <button id="lookupBtnC" class="lookup-btn" type="button">🌐 用條碼查合法／開放商品資料</button>
+  <div id="lookupStatusC" class="lookup-status">掃描後會先查本機已確認資料，再查開放商品資料來源。</div>
+  <div id="sourceInfoC" class="source-info"></div>
+</div>
 
 <label>商品名稱／品項</label>
 <input id="nameC" placeholder="例如：棉柔舒適抽取衛生紙">
@@ -492,8 +537,15 @@ button{cursor:pointer}
 歷史價格僅代表當時紀錄，不代表賣場目前仍維持相同售價或促銷。
 </div>
 
+
+<div class="note" style="margin-top:12px">
+V2.7 商品資料查詢原則：優先使用本機已確認資料與具公開介面的開放資料來源。
+本版不會自動爬取購物網站，也不會繞過登入、付費牆或技術限制。
+GS1 Taiwan 作為 GTIN 標準與驗證的重要來源；在未確認可供本 APP 程式化再利用的授權/API 前，不直接自動抓取其資料。
+</div>
+
 <div class="footer">
-衛生紙比價神器 V2.6｜最新版
+衛生紙比價神器 V2.7｜最新版
 </div>
 
 </div>
@@ -541,7 +593,189 @@ el("threeBtn").addEventListener("click",function(){
 });
 
 /* 自訂品牌、通路、促銷欄位 */
+
+/* ===== V2.7 合法／開放資料來源查詢 =====
+   順序：
+   1. 本機已確認商品快取（使用者裝置 localStorage）
+   2. Open Products Facts 公開 API
+   GS1 Taiwan 目前僅作為標準/驗證來源概念；本版不以未確認授權的方式爬取其網站。
+*/
+var PRODUCT_CACHE_KEY="tissueProductCacheV27";
+
+function loadProductCache(){
+  try{
+    var x=JSON.parse(localStorage.getItem(PRODUCT_CACHE_KEY)||"{}");
+    return x && typeof x==="object" ? x : {};
+  }catch(e){ return {}; }
+}
+function saveProductCache(cache){
+  try{ localStorage.setItem(PRODUCT_CACHE_KEY,JSON.stringify(cache)); }catch(e){}
+}
+function cleanBarcode(v){ return String(v||"").replace(/\D/g,""); }
+
+function setLookupStatus(id,msg,kind){
+  var n=el("lookupStatus"+id);
+  if(!n)return;
+  n.className="lookup-status "+(kind==="ok"?"lookup-ok":kind==="warn"?"lookup-warn":"");
+  n.textContent=msg;
+}
+function setSourceInfo(id,source,url){
+  var n=el("sourceInfo"+id);
+  if(!n)return;
+  n.innerHTML="";
+  if(!source)return;
+  var t=document.createElement("span");
+  t.textContent="資料來源："+source;
+  n.appendChild(t);
+  if(url){
+    n.appendChild(document.createTextNode(" ｜ "));
+    var a=document.createElement("a");
+    a.href=url; a.target="_blank"; a.rel="noopener noreferrer";
+    a.textContent="查看來源";
+    n.appendChild(a);
+  }
+}
+
+function selectOrOther(selectId,otherId,value){
+  value=String(value||"").trim();
+  if(!value)return;
+  var sel=el(selectId), other=el(otherId);
+  if(!sel)return;
+  var found=false;
+  Array.from(sel.options).forEach(function(o){
+    if(o.value.toLowerCase()===value.toLowerCase() || o.text.toLowerCase()===value.toLowerCase()){
+      sel.value=o.value; found=true;
+    }
+  });
+  if(!found){
+    var otherOption=Array.from(sel.options).find(function(o){return o.value==="其他品牌"||o.text==="其他品牌";});
+    if(otherOption){
+      sel.value=otherOption.value;
+      if(other){ other.style.display="block"; other.value=value; }
+    }
+  }
+}
+
+function firstNumber(re,text){
+  var m=String(text||"").match(re);
+  return m ? Number(m[1]) : 0;
+}
+function inferTissueSpecs(text){
+  text=String(text||"").replace(/,/g," ");
+  return {
+    sheets:firstNumber(/(\d{2,4})\s*(?:抽|sheets?|pulls?)/i,text),
+    packs:firstNumber(/(\d{1,3})\s*(?:包|入|packs?|pk)\b?/i,text),
+    layers:firstNumber(/([2-6])\s*(?:層|ply|plies)/i,text)
+  };
+}
+
+function applyProductData(id,d){
+  if(!d)return false;
+  if(d.name && el("name"+id)) el("name"+id).value=d.name;
+  if(d.brand) selectOrOther("brand"+id,"brandOther"+id,d.brand);
+  if(d.sheets && el("sheets"+id)) el("sheets"+id).value=d.sheets;
+  if(d.packs && el("packs"+id)) el("packs"+id).value=d.packs;
+  if(d.layers && el("layers"+id)) el("layers"+id).value=String(d.layers);
+  return !!(d.name||d.brand||d.sheets||d.packs||d.layers);
+}
+
+function cacheCurrentProduct(id,source,sourceUrl){
+  var barcode=cleanBarcode(el("barcode"+id) && el("barcode"+id).value);
+  if(!barcode)return;
+  var cache=loadProductCache();
+  cache[barcode]={
+    barcode:barcode,
+    name:el("name"+id)?el("name"+id).value.trim():"",
+    brand:brand(id),
+    sheets:num(el("sheets"+id)?el("sheets"+id).value:0),
+    packs:num(el("packs"+id)?el("packs"+id).value:0),
+    layers:num(el("layers"+id)?el("layers"+id).value:0),
+    source:source||"使用者確認",
+    sourceUrl:sourceUrl||"",
+    savedAt:new Date().toISOString()
+  };
+  saveProductCache(cache);
+}
+
+async function queryOpenProductsFacts(barcode){
+  var url="https://world.openproductsfacts.org/api/v2/product/"+encodeURIComponent(barcode)+".json";
+  var res=await fetch(url,{headers:{"Accept":"application/json"}});
+  if(!res.ok)throw new Error("HTTP "+res.status);
+  var j=await res.json();
+  if(!j || j.status!==1 || !j.product)return null;
+  var p=j.product;
+  var name=p.product_name_zh || p.product_name || p.generic_name_zh || p.generic_name || "";
+  var brand=p.brands || "";
+  var text=[
+    name, p.quantity||"", p.packaging_text_zh||"", p.packaging_text||"",
+    p.categories_zh||"", p.categories||""
+  ].join(" ");
+  var specs=inferTissueSpecs(text);
+  return {
+    barcode:barcode,
+    name:name,
+    brand:brand.split(",")[0].trim(),
+    sheets:specs.sheets,
+    packs:specs.packs,
+    layers:specs.layers,
+    source:"Open Products Facts",
+    sourceUrl:"https://world.openproductsfacts.org/product/"+encodeURIComponent(barcode),
+    rawText:text
+  };
+}
+
+async function lookupBarcode(id,automatic){
+  var input=el("barcode"+id);
+  var barcode=cleanBarcode(input && input.value);
+  if(!barcode){
+    setLookupStatus(id,"請先掃描或輸入商品條碼。","warn");
+    return;
+  }
+  input.value=barcode;
+
+  var cache=loadProductCache();
+  if(cache[barcode]){
+    applyProductData(id,cache[barcode]);
+    setLookupStatus(id,"✅ 已從本機已確認商品資料自動帶入。","ok");
+    setSourceInfo(id,cache[barcode].source||"本機已確認資料",cache[barcode].sourceUrl||"");
+    return;
+  }
+
+  setLookupStatus(id,"🔎 正在查詢開放商品資料…","");
+  setSourceInfo(id,"","");
+  try{
+    var d=await queryOpenProductsFacts(barcode);
+    if(d){
+      applyProductData(id,d);
+      var complete=d.name && d.sheets && d.packs && d.layers;
+      if(complete){
+        setLookupStatus(id,"✅ 找到商品資料，已自動填入。請快速確認規格是否與包裝一致。","ok");
+      }else{
+        setLookupStatus(id,"⚠️ 找到部分商品資料，已填入可確認的欄位；缺少的規格請以包裝標示為準。","warn");
+      }
+      setSourceInfo(id,d.source,d.sourceUrl);
+      /* 開放來源結果先快取；使用者之後修改並比價/儲存時會以確認後資料覆蓋 */
+      var c=loadProductCache(); c[barcode]=d; saveProductCache(c);
+      return;
+    }
+    setLookupStatus(id,"⚠️ 開放資料來源目前查不到這個條碼。你仍可手動填寫；之後本機會記住。","warn");
+  }catch(e){
+    setLookupStatus(id,"⚠️ 網路商品資料查詢暫時失敗；掃描與手動比價仍可正常使用。","warn");
+  }
+}
+
+/* 成功掃描後自動查資料：掛接既有 scanSuccess */
+if(typeof scanSuccess==="function"){
+  var _scanSuccessV26=scanSuccess;
+  scanSuccess=function(id,value){
+    _scanSuccessV26(id,value);
+    setTimeout(function(){ lookupBarcode(id,true); },100);
+  };
+}
+
 ["A","B","C"].forEach(function(id){
+  if(el("lookupBtn"+id)) el("lookupBtn"+id).addEventListener("click",function(){lookupBarcode(id,false);});
+
 
  el("brand"+id).addEventListener("change",function(){
    el("brandOther"+id).style.display=
@@ -663,6 +897,7 @@ el("compareBtn").addEventListener("click",function(){
 
  arr.sort(function(a,b){return a.perSheet-b.perSheet;});
  compared=arr;
+ arr.forEach(function(p){ if(p.barcode) cacheCurrentProduct(p.id,"使用者確認／開放資料核對後",""); });
 
  var html=
  '<div class="winner">🏆 真實每抽價格最低：'+
@@ -1104,7 +1339,7 @@ el("clearBtn").addEventListener("click",function(){
 updateCount();
 
 
-/* ===== V2.6 條碼掃描：原生 BarcodeDetector + html5-qrcode 備援 ===== */
+/* ===== V2.7 條碼掃描：原生 BarcodeDetector + html5-qrcode 備援 ===== */
 var scanSessions={A:null,B:null,C:null};
 
 function scanStatus(id,msg,ok){
