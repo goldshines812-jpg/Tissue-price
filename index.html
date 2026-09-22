@@ -4,330 +4,387 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#1976d2">
-
-<title>衛生紙比價神器 V2.4</title>
+<title>衛生紙比價神器 V2.4.1</title>
 
 <style>
 *{box-sizing:border-box}
-
 body{
   margin:0;
   font-family:Arial,"Microsoft JhengHei",sans-serif;
   background:#f5f7fa;
   color:#222;
 }
-
 .container{
-  max-width:700px;
+  max-width:720px;
   margin:auto;
   padding:22px 15px 60px;
 }
-
-h1{
-  margin:0 0 8px;
-  font-size:29px;
-}
-
-.subtitle{
-  color:#777;
-  line-height:1.7;
-  margin-bottom:20px;
-}
-
+h1{font-size:30px;margin:0 0 8px}
+.subtitle{color:#777;line-height:1.7;margin-bottom:20px}
 .card{
   background:#fff;
-  border-radius:21px;
-  padding:21px 19px;
-  margin-bottom:19px;
+  border-radius:22px;
+  padding:22px 20px;
+  margin-bottom:20px;
   box-shadow:0 7px 24px rgba(0,0,0,.06);
 }
-
-h2{
-  margin:0 0 17px;
-  font-size:23px;
-}
-
+h2{margin:0 0 18px;font-size:24px}
 label{
   display:block;
+  font-size:17px;
   font-weight:bold;
-  margin:16px 0 7px;
+  margin:17px 0 8px;
 }
-
 input,select{
   width:100%;
-  min-height:53px;
-  padding:12px 13px;
-  font-size:16px;
+  min-height:56px;
+  padding:13px;
   border:1px solid #ccc;
-  border-radius:13px;
+  border-radius:15px;
   background:#fff;
+  font-size:17px;
 }
-
-input:focus,select:focus{
-  outline:2px solid #1976d2;
-  border-color:#1976d2;
-}
-
-.toggle{
-  display:flex;
-  gap:10px;
-}
-
+.toggle{display:flex;gap:10px}
 .toggle button{
   flex:1;
-  min-height:50px;
+  min-height:55px;
   border:1px solid #1976d2;
-  border-radius:13px;
+  border-radius:15px;
   background:#fff;
   color:#1976d2;
+  font-size:17px;
   font-weight:bold;
-  font-size:16px;
 }
-
-.toggle button.active{
-  background:#1976d2;
-  color:#fff;
-}
-
-.main-btn,
-.save-btn,
-.history-btn,
-.organize-btn,
-.gray-btn,
-.danger-btn{
+.toggle button.active{background:#1976d2;color:#fff}
+button{cursor:pointer}
+.main-btn,.save-btn,.organize-btn,.history-btn,.gray-btn,.danger-btn{
   width:100%;
   border:0;
-  border-radius:16px;
-  padding:17px;
+  border-radius:17px;
+  padding:18px 12px;
   color:#fff;
-  font-size:18px;
+  font-size:20px;
   font-weight:bold;
-  margin-bottom:12px;
-  cursor:pointer;
+  margin-bottom:13px;
 }
-
-.main-btn{
-  background:#1976d2;
-  font-size:21px;
-}
-
-.save-btn{background:#16823b}
-.history-btn{background:#6a3db8}
-.organize-btn{background:#e67e22}
+.main-btn{background:#1976d2}
+.save-btn{background:#16823b;margin-top:15px}
+.organize-btn{background:#ed7d13}
+.history-btn{background:#7040c1}
 .gray-btn{background:#666}
-.danger-btn{background:#b3261e}
-
-.small-delete{
+.danger-btn{background:#bd211b}
+.delete-btn{
   border:0;
-  background:#b3261e;
-  color:#fff;
-  padding:9px 13px;
   border-radius:10px;
+  padding:10px 14px;
+  background:#bd211b;
+  color:#fff;
   font-weight:bold;
-  margin-top:10px;
-}
-
-.hidden{display:none}
-
-.custom{
-  display:none;
-  margin-top:9px;
-}
-
-.promo-extra{
-  display:none;
-  background:#f7f8fb;
-  padding:13px;
-  border-radius:13px;
-  margin-top:10px;
-}
-
-#result,#historySection{
-  display:none;
-}
-
-.winner{
-  color:#16823b;
-  font-size:22px;
-  font-weight:bold;
-  line-height:1.55;
-  margin-bottom:14px;
-}
-
-.result-row,
-.history-row{
-  border-bottom:1px solid #eee;
-  padding:16px 0;
-  line-height:1.8;
-}
-
-.result-row:last-child,
-.history-row:last-child{
-  border-bottom:0;
-}
-
-.rank{
-  font-size:19px;
-  font-weight:bold;
-}
-
-.unit-price{
-  font-size:18px;
-  font-weight:bold;
-}
-
-.promo-info{
-  background:#fff8e6;
-  padding:10px 12px;
-  border-radius:11px;
-  margin-top:8px;
-}
-
-.error{
-  padding:14px;
-  border-radius:12px;
-  background:#fff3f3;
-  color:#b00020;
-  font-weight:bold;
-  line-height:1.6;
-}
-
-.success{
-  padding:14px;
-  border-radius:12px;
-  background:#edf8f0;
-  color:#176b35;
-  font-weight:bold;
-  line-height:1.6;
   margin-top:12px;
 }
-
-.history-best{
-  background:#edf8f0;
-  border-radius:14px;
-  padding:15px;
-  margin-bottom:15px;
-  line-height:1.7;
+#productC{display:none}
+.extra{display:none;background:#f6f7f9;padding:12px;border-radius:12px;margin-top:10px}
+#result,#historySection{display:none}
+.result-row,.history-row{
+  border-bottom:1px solid #eee;
+  padding:17px 0;
+  line-height:1.8;
 }
-
-.archive-box{
-  background:#fff8e6;
-  border-radius:14px;
-  padding:15px;
-  margin-bottom:15px;
-  line-height:1.7;
-}
-
-.trend{
-  background:#f6f7fa;
-  border-radius:12px;
-  padding:11px;
-  margin-top:10px;
-  line-height:1.7;
-}
-
-.trend-title{
-  font-weight:bold;
-  margin-bottom:7px;
-}
-
-.trend-line{
-  padding:6px 0;
-  border-bottom:1px dashed #ddd;
-}
-
-.trend-line:last-child{
-  border-bottom:0;
-}
-
-.price-down{
+.result-row:last-child,.history-row:last-child{border-bottom:0}
+.winner{
   color:#16823b;
+  font-size:21px;
   font-weight:bold;
+  line-height:1.6;
+  margin-bottom:15px;
 }
-
-.price-up{
-  color:#b3261e;
-  font-weight:bold;
+.rank{font-size:20px;font-weight:bold}
+.promo-box{
+  background:#fff7e3;
+  padding:12px;
+  border-radius:12px;
+  margin:9px 0;
 }
-
-.price-same{
-  color:#666;
-  font-weight:bold;
+.unit{font-size:18px;font-weight:bold}
+.success{
+  background:#edf8f0;
+  color:#176b35;
+  padding:14px;
+  border-radius:12px;
+  line-height:1.6;
 }
-
-.note{
-  color:#777;
-  font-size:13px;
-  line-height:1.75;
-  margin-top:18px;
+.error{
+  background:#fff1f1;
+  color:#a80018;
+  padding:14px;
+  border-radius:12px;
+  line-height:1.6;
 }
-
-.footer{
-  text-align:center;
-  color:#aaa;
-  font-size:12px;
-  margin-top:25px;
+.trend{
+  background:#f5f6f8;
+  border-radius:12px;
+  padding:12px;
+  margin-top:10px;
 }
-
+.trend-line{
+  border-bottom:1px dashed #ddd;
+  padding:7px 0;
+}
+.trend-line:last-child{border-bottom:0}
+.down{color:#16823b;font-weight:bold}
+.up{color:#b3261e;font-weight:bold}
+.same{color:#666;font-weight:bold}
 .badge{
   display:inline-block;
-  padding:4px 8px;
+  padding:4px 9px;
   border-radius:8px;
-  background:#eef3ff;
+  background:#edf3ff;
   color:#315da8;
   font-size:13px;
-  margin-top:5px;
 }
-
-.old-badge{
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:8px;
-  background:#fff3d8;
-  color:#8a5a00;
-  font-size:13px;
-  margin-top:5px;
+.old{
+  background:#fff2d6;
+  color:#8a5900;
 }
-
-.current-badge{
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:8px;
+.current{
   background:#e8f5e9;
   color:#176b35;
-  font-size:13px;
-  margin-top:5px;
 }
-
-@media(max-width:480px){
-  .container{padding:20px 14px 50px}
-  h1{font-size:28px}
+.summary{
+  background:#edf8f0;
+  padding:15px;
+  border-radius:14px;
+  line-height:1.8;
+  margin-bottom:12px;
 }
+.note{color:#777;font-size:13px;line-height:1.8}
+.footer{text-align:center;color:#aaa;font-size:12px;margin-top:25px}
 </style>
 </head>
 
 <body>
-
 <div class="container">
 
-<h1>🧻 衛生紙比價神器 V2.4</h1>
-
-<div class="subtitle">
-看懂促銷真正價格，累積自己的衛生紙價格資料庫。
-</div>
+<h1>🧻 衛生紙比價神器 V2.4.1</h1>
+<div class="subtitle">促銷換算・價格走勢・歷史價格一鍵整理</div>
 
 <div class="card">
-
 <h2>要比較幾個商品？</h2>
-
 <div class="toggle">
-<button id="btn2" class="active" type="button">2 個商品</button>
-<button id="btn3" type="button">3 個商品</button>
+<button id="twoBtn" class="active" type="button">2 個商品</button>
+<button id="threeBtn" type="button">3 個商品</button>
+</div>
 </div>
 
+<!-- 商品 A -->
+<div class="card" id="productA">
+<h2>商品 A</h2>
+
+<label>商品名稱／品項</label>
+<input id="nameA" placeholder="例如：棉柔舒適抽取衛生紙">
+
+<label>品牌</label>
+<select id="brandA">
+<option value="">請選擇品牌</option>
+<option>舒潔</option><option>五月花</option><option>春風</option>
+<option>得意</option><option>倍潔雅</option><option>柔情</option>
+<option>蒲公英</option><option>唯潔雅</option><option>可麗舒</option>
+<option>Tempo 得寶</option><option>家樂福</option>
+<option>全聯自有品牌</option><option>其他品牌</option>
+</select>
+<input id="brandOtherA" class="extra" placeholder="請輸入品牌">
+
+<label>購買通路</label>
+<select id="storeA">
+<option value="">請選擇通路</option>
+<option>全聯</option><option>大全聯</option><option>大潤發</option>
+<option>家樂福</option><option>7-ELEVEN</option><option>全家</option>
+<option>萊爾富</option><option>OK超商</option><option>寶雅</option>
+<option>屈臣氏</option><option>康是美</option><option>好市多 Costco</option>
+<option>momo</option><option>蝦皮</option><option>PChome</option>
+<option>其他通路</option>
+</select>
+<input id="storeOtherA" class="extra" placeholder="請輸入通路">
+
+<label>賣場標示售價（元）</label>
+<input id="priceA" type="number" inputmode="decimal" placeholder="例如：299">
+
+<label>每包抽數</label>
+<input id="sheetsA" type="number" inputmode="numeric" placeholder="例如：100">
+
+<label>原始一組幾包</label>
+<input id="packsA" type="number" inputmode="numeric" placeholder="例如：12">
+
+<label>層數</label>
+<select id="layersA">
+<option value="">請選擇層數</option>
+<option value="2">2 層</option><option value="3">3 層</option>
+<option value="4">4 層</option><option value="5">5 層</option>
+<option value="6">6 層</option>
+</select>
+
+<label>促銷方式</label>
+<select id="promoA">
+<option value="none">無促銷</option>
+<option value="bogo">買一送一</option>
+<option value="buy2get1">買二送一</option>
+<option value="second50">第二件5折</option>
+<option value="secondCustom">第二件自訂折數</option>
+<option value="nprice">任選 N 件特價</option>
+</select>
+
+<div id="discountBoxA" class="extra">
+<label>第二件幾折？</label>
+<input id="discountA" type="number" inputmode="decimal" placeholder="例如：6">
 </div>
 
-<div id="productArea"></div>
+<div id="nBoxA" class="extra">
+<label>活動件數</label>
+<input id="qtyA" type="number" inputmode="numeric" placeholder="例如：2">
+<label>活動總價</label>
+<input id="totalA" type="number" inputmode="decimal" placeholder="例如：399">
+</div>
+</div>
+
+<!-- 商品 B -->
+<div class="card" id="productB">
+<h2>商品 B</h2>
+
+<label>商品名稱／品項</label>
+<input id="nameB" placeholder="例如：棉柔舒適抽取衛生紙">
+
+<label>品牌</label>
+<select id="brandB">
+<option value="">請選擇品牌</option>
+<option>舒潔</option><option>五月花</option><option>春風</option>
+<option>得意</option><option>倍潔雅</option><option>柔情</option>
+<option>蒲公英</option><option>唯潔雅</option><option>可麗舒</option>
+<option>Tempo 得寶</option><option>家樂福</option>
+<option>全聯自有品牌</option><option>其他品牌</option>
+</select>
+<input id="brandOtherB" class="extra" placeholder="請輸入品牌">
+
+<label>購買通路</label>
+<select id="storeB">
+<option value="">請選擇通路</option>
+<option>全聯</option><option>大全聯</option><option>大潤發</option>
+<option>家樂福</option><option>7-ELEVEN</option><option>全家</option>
+<option>萊爾富</option><option>OK超商</option><option>寶雅</option>
+<option>屈臣氏</option><option>康是美</option><option>好市多 Costco</option>
+<option>momo</option><option>蝦皮</option><option>PChome</option>
+<option>其他通路</option>
+</select>
+<input id="storeOtherB" class="extra" placeholder="請輸入通路">
+
+<label>賣場標示售價（元）</label>
+<input id="priceB" type="number" inputmode="decimal" placeholder="例如：299">
+
+<label>每包抽數</label>
+<input id="sheetsB" type="number" inputmode="numeric" placeholder="例如：100">
+
+<label>原始一組幾包</label>
+<input id="packsB" type="number" inputmode="numeric" placeholder="例如：12">
+
+<label>層數</label>
+<select id="layersB">
+<option value="">請選擇層數</option>
+<option value="2">2 層</option><option value="3">3 層</option>
+<option value="4">4 層</option><option value="5">5 層</option>
+<option value="6">6 層</option>
+</select>
+
+<label>促銷方式</label>
+<select id="promoB">
+<option value="none">無促銷</option>
+<option value="bogo">買一送一</option>
+<option value="buy2get1">買二送一</option>
+<option value="second50">第二件5折</option>
+<option value="secondCustom">第二件自訂折數</option>
+<option value="nprice">任選 N 件特價</option>
+</select>
+
+<div id="discountBoxB" class="extra">
+<label>第二件幾折？</label>
+<input id="discountB" type="number" inputmode="decimal" placeholder="例如：6">
+</div>
+
+<div id="nBoxB" class="extra">
+<label>活動件數</label>
+<input id="qtyB" type="number" inputmode="numeric" placeholder="例如：2">
+<label>活動總價</label>
+<input id="totalB" type="number" inputmode="decimal" placeholder="例如：399">
+</div>
+</div>
+
+<!-- 商品 C -->
+<div class="card" id="productC">
+<h2>商品 C</h2>
+
+<label>商品名稱／品項</label>
+<input id="nameC" placeholder="例如：棉柔舒適抽取衛生紙">
+
+<label>品牌</label>
+<select id="brandC">
+<option value="">請選擇品牌</option>
+<option>舒潔</option><option>五月花</option><option>春風</option>
+<option>得意</option><option>倍潔雅</option><option>柔情</option>
+<option>蒲公英</option><option>唯潔雅</option><option>可麗舒</option>
+<option>Tempo 得寶</option><option>家樂福</option>
+<option>全聯自有品牌</option><option>其他品牌</option>
+</select>
+<input id="brandOtherC" class="extra" placeholder="請輸入品牌">
+
+<label>購買通路</label>
+<select id="storeC">
+<option value="">請選擇通路</option>
+<option>全聯</option><option>大全聯</option><option>大潤發</option>
+<option>家樂福</option><option>7-ELEVEN</option><option>全家</option>
+<option>萊爾富</option><option>OK超商</option><option>寶雅</option>
+<option>屈臣氏</option><option>康是美</option><option>好市多 Costco</option>
+<option>momo</option><option>蝦皮</option><option>PChome</option>
+<option>其他通路</option>
+</select>
+<input id="storeOtherC" class="extra" placeholder="請輸入通路">
+
+<label>賣場標示售價（元）</label>
+<input id="priceC" type="number" inputmode="decimal" placeholder="例如：299">
+
+<label>每包抽數</label>
+<input id="sheetsC" type="number" inputmode="numeric" placeholder="例如：100">
+
+<label>原始一組幾包</label>
+<input id="packsC" type="number" inputmode="numeric" placeholder="例如：12">
+
+<label>層數</label>
+<select id="layersC">
+<option value="">請選擇層數</option>
+<option value="2">2 層</option><option value="3">3 層</option>
+<option value="4">4 層</option><option value="5">5 層</option>
+<option value="6">6 層</option>
+</select>
+
+<label>促銷方式</label>
+<select id="promoC">
+<option value="none">無促銷</option>
+<option value="bogo">買一送一</option>
+<option value="buy2get1">買二送一</option>
+<option value="second50">第二件5折</option>
+<option value="secondCustom">第二件自訂折數</option>
+<option value="nprice">任選 N 件特價</option>
+</select>
+
+<div id="discountBoxC" class="extra">
+<label>第二件幾折？</label>
+<input id="discountC" type="number" inputmode="decimal" placeholder="例如：6">
+</div>
+
+<div id="nBoxC" class="extra">
+<label>活動件數</label>
+<input id="qtyC" type="number" inputmode="numeric" placeholder="例如：2">
+<label>活動總價</label>
+<input id="totalC" type="number" inputmode="decimal" placeholder="例如：399">
+</div>
+</div>
 
 <button id="compareBtn" class="main-btn" type="button">
 🔍 開始比價
@@ -336,611 +393,643 @@ input:focus,select:focus{
 <div id="result" class="card"></div>
 
 <div class="card">
-
 <h2>📚 我的歷史價格</h2>
 
 <button id="organizeBtn" class="organize-btn" type="button">
 🧹 一鍵整理歷史價格
 </button>
 
-<button id="historyCompareBtn" class="history-btn" type="button">
+<button id="currentRankBtn" class="history-btn" type="button">
 🏆 目前最新價格排名
 </button>
 
-<button id="showHistoryBtn" class="gray-btn" type="button">
+<button id="historyBtn" class="gray-btn" type="button">
 📈 查看歷史紀錄／價格走勢
 </button>
 
-<button id="clearHistoryBtn" class="danger-btn" type="button">
+<button id="clearBtn" class="danger-btn" type="button">
 🗑 清除全部歷史紀錄
 </button>
 
-<div id="historyCount" class="note">
-目前 0 筆商品紀錄
-</div>
-
+<div id="historyCount" class="note">目前 0 筆商品紀錄</div>
 </div>
 
 <div id="historySection" class="card">
-
-<h2 id="historyTitle">📈 歷史價格／價格走勢</h2>
-
+<h2 id="historyTitle">📈 歷史紀錄</h2>
 <div id="historyList"></div>
-
 </div>
 
 <div class="note">
-
-<strong>V2.4 比價方式：</strong><br>
-系統會先依促銷方式計算「實際付款金額」與「實際取得包數」，
-再換算真正每抽成本。
-
-<br><br>
-
-<strong>🧹 一鍵整理：</strong><br>
-會整理所有保存過的歷史成交價格，
-依當時「真正每抽價格」由便宜到貴排列。
-歷史價格不代表賣場目前仍有相同活動，
-請以現場最新標價為準。
-
-<br><br>
-
-<strong>🏆 目前最新價格排名：</strong><br>
-只使用每個商品最後一次輸入的價格，
-方便與歷史最低價格區分。
-
-<br><br>
-
-同款商品依「商品名稱＋品牌＋通路＋每包抽數＋原始包數＋層數」辨識。
-
+主要排名依「真正每抽價格」。促銷活動會先換算實際付款與實際取得數量。
+歷史價格僅代表當時紀錄，不代表賣場目前仍維持相同售價或促銷。
 </div>
 
 <div class="footer">
-衛生紙比價神器 V2.4｜促銷＋價格走勢＋一鍵整理版
+衛生紙比價神器 V2.4.1｜修正版
 </div>
 
 </div>
 
 <script>
-
-/* ==============================
-   基本資料
-============================== */
-
-var brands=[
-"舒潔",
-"五月花",
-"春風",
-"得意",
-"倍潔雅",
-"柔情",
-"蒲公英",
-"唯潔雅",
-"可麗舒",
-"Tempo 得寶",
-"家樂福",
-"全聯自有品牌",
-"其他品牌"
-];
-
-var stores=[
-"全聯",
-"大全聯",
-"大潤發",
-"家樂福",
-"7-ELEVEN",
-"全家",
-"萊爾富",
-"OK超商",
-"寶雅",
-"屈臣氏",
-"康是美",
-"好市多 Costco",
-"momo",
-"蝦皮",
-"PChome",
-"其他通路"
-];
+"use strict";
 
 var productCount=2;
-var lastComparedProducts=[];
+var compared=[];
 
+function el(id){return document.getElementById(id);}
+function num(v){var n=Number(v);return Number.isFinite(n)?n:0;}
 
-/* ==============================
-   工具
-============================== */
-
-function safeNumber(v,fallback){
-  var n=Number(v);
-  return Number.isFinite(n)?n:(fallback||0);
+function esc(v){
+ return String(v==null?"":v)
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;")
+ .replace(/'/g,"&#039;");
 }
 
-function escapeHtml(text){
-  return String(text==null?"":text)
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;")
-  .replace(/'/g,"&#039;");
+function now(){
+ var d=new Date();
+ return d.getFullYear()+"/"+
+ String(d.getMonth()+1).padStart(2,"0")+"/"+
+ String(d.getDate()).padStart(2,"0")+" "+
+ String(d.getHours()).padStart(2,"0")+":"+
+ String(d.getMinutes()).padStart(2,"0");
 }
 
-function makeOptions(arr,first){
+/* 2 / 3 商品 */
+el("twoBtn").addEventListener("click",function(){
+ productCount=2;
+ el("productC").style.display="none";
+ el("twoBtn").classList.add("active");
+ el("threeBtn").classList.remove("active");
+});
 
-  var html='<option value="">'+first+'</option>';
+el("threeBtn").addEventListener("click",function(){
+ productCount=3;
+ el("productC").style.display="block";
+ el("threeBtn").classList.add("active");
+ el("twoBtn").classList.remove("active");
+});
 
-  arr.forEach(function(x){
-    html+='<option value="'+x+'">'+x+'</option>';
-  });
+/* 自訂品牌、通路、促銷欄位 */
+["A","B","C"].forEach(function(id){
 
-  return html;
+ el("brand"+id).addEventListener("change",function(){
+   el("brandOther"+id).style.display=
+   this.value==="其他品牌"?"block":"none";
+ });
+
+ el("store"+id).addEventListener("change",function(){
+   el("storeOther"+id).style.display=
+   this.value==="其他通路"?"block":"none";
+ });
+
+ el("promo"+id).addEventListener("change",function(){
+   el("discountBox"+id).style.display=
+   this.value==="secondCustom"?"block":"none";
+
+   el("nBox"+id).style.display=
+   this.value==="nprice"?"block":"none";
+ });
+});
+
+function brand(id){
+ var v=el("brand"+id).value;
+ return v==="其他品牌"?el("brandOther"+id).value.trim():v;
 }
 
-
-/* ==============================
-   建立商品
-============================== */
-
-function makeProduct(id){
-
-return `
-
-<div class="card productCard" id="card${id}">
-
-<h2>商品 ${id}</h2>
-
-<label>商品名稱／品項</label>
-<input
- id="name${id}"
- type="text"
- placeholder="例如：舒潔 棉柔舒適抽取衛生紙">
-
-<label>品牌</label>
-
-<select id="brand${id}" onchange="customCheck('${id}')">
-${makeOptions(brands,"請選擇品牌")}
-</select>
-
-<input
- id="customBrand${id}"
- class="custom"
- type="text"
- placeholder="請輸入品牌名稱">
-
-<label>購買通路</label>
-
-<select id="store${id}" onchange="customCheck('${id}')">
-${makeOptions(stores,"請選擇通路")}
-</select>
-
-<input
- id="customStore${id}"
- class="custom"
- type="text"
- placeholder="請輸入購買通路">
-
-<label>賣場標示售價（元）</label>
-
-<input
- id="price${id}"
- type="number"
- inputmode="decimal"
- min="0.01"
- step="0.01"
- placeholder="例如：299">
-
-<label>每包抽數</label>
-
-<input
- id="sheets${id}"
- type="number"
- inputmode="numeric"
- min="1"
- step="1"
- placeholder="例如：100">
-
-<label>原始一組幾包</label>
-
-<input
- id="packs${id}"
- type="number"
- inputmode="numeric"
- min="1"
- step="1"
- placeholder="例如：12">
-
-<label>層數</label>
-
-<select id="layers${id}">
-<option value="">請選擇層數</option>
-<option value="2">2 層</option>
-<option value="3">3 層</option>
-<option value="4">4 層</option>
-<option value="5">5 層</option>
-<option value="6">6 層</option>
-</select>
-
-<label>促銷方式</label>
-
-<select id="promo${id}" onchange="promoCheck('${id}')">
-
-<option value="none">無促銷</option>
-<option value="bogo">買一送一</option>
-<option value="buy2get1">買二送一</option>
-<option value="second50">第二件 5 折</option>
-<option value="secondDiscount">第二件自訂折數</option>
-<option value="nForPrice">任選 N 件特價</option>
-
-</select>
-
-<div id="discountBox${id}" class="promo-extra">
-
-<label>第二件是幾折？</label>
-
-<input
- id="discount${id}"
- type="number"
- inputmode="decimal"
- min="0"
- max="10"
- step="0.1"
- placeholder="例如：6 = 第二件6折">
-
-</div>
-
-<div id="nPriceBox${id}" class="promo-extra">
-
-<label>活動件數</label>
-
-<input
- id="promoQty${id}"
- type="number"
- inputmode="numeric"
- min="1"
- step="1"
- placeholder="例如：2">
-
-<label>活動總價（元）</label>
-
-<input
- id="promoTotal${id}"
- type="number"
- inputmode="decimal"
- min="0.01"
- step="0.01"
- placeholder="例如：399">
-
-</div>
-
-</div>
-
-`;
-
-}
-
-document.getElementById("productArea").innerHTML=
-makeProduct("A")+
-makeProduct("B")+
-makeProduct("C");
-
-document.getElementById("cardC").classList.add("hidden");
-
-
-/* ==============================
-   2 / 3 商品
-============================== */
-
-function setCount(n){
-
-  productCount=n;
-
-  document.getElementById("cardC")
-  .classList.toggle("hidden",n===2);
-
-  document.getElementById("btn2")
-  .classList.toggle("active",n===2);
-
-  document.getElementById("btn3")
-  .classList.toggle("active",n===3);
-}
-
-document.getElementById("btn2").onclick=function(){
-  setCount(2);
-};
-
-document.getElementById("btn3").onclick=function(){
-  setCount(3);
-};
-
-
-/* ==============================
-   自訂品牌 / 通路
-============================== */
-
-function customCheck(id){
-
-  var brand=document.getElementById("brand"+id);
-  var store=document.getElementById("store"+id);
-
-  document.getElementById("customBrand"+id).style.display=
-  brand.value==="其他品牌"?"block":"none";
-
-  document.getElementById("customStore"+id).style.display=
-  store.value==="其他通路"?"block":"none";
-}
-
-function realBrand(id){
-
-  var value=document.getElementById("brand"+id).value;
-
-  if(value==="其他品牌"){
-    return document.getElementById("customBrand"+id).value.trim();
-  }
-
-  return value;
-}
-
-function realStore(id){
-
-  var value=document.getElementById("store"+id).value;
-
-  if(value==="其他通路"){
-    return document.getElementById("customStore"+id).value.trim();
-  }
-
-  return value;
-}
-
-
-/* ==============================
-   促銷
-============================== */
-
-function promoCheck(id){
-
-  var promo=document.getElementById("promo"+id).value;
-
-  document.getElementById("discountBox"+id).style.display=
-  promo==="secondDiscount"?"block":"none";
-
-  document.getElementById("nPriceBox"+id).style.display=
-  promo==="nForPrice"?"block":"none";
+function store(id){
+ var v=el("store"+id).value;
+ return v==="其他通路"?el("storeOther"+id).value.trim():v;
 }
 
 function getProduct(id){
-
-return{
+ return{
   id:id,
-  name:document.getElementById("name"+id).value.trim(),
-  brand:realBrand(id),
-  store:realStore(id),
+  name:el("name"+id).value.trim(),
+  brand:brand(id),
+  store:store(id),
+  price:num(el("price"+id).value),
+  sheets:num(el("sheets"+id).value),
+  packs:num(el("packs"+id).value),
+  layers:num(el("layers"+id).value),
+  promo:el("promo"+id).value,
+  discount:num(el("discount"+id).value),
+  qty:num(el("qty"+id).value),
+  promoTotal:num(el("total"+id).value)
+ };
+}
 
-  price:parseFloat(
-    document.getElementById("price"+id).value
-  ),
-
-  sheets:parseFloat(
-    document.getElementById("sheets"+id).value
-  ),
-
-  packs:parseFloat(
-    document.getElementById("packs"+id).value
-  ),
-
-  layers:parseFloat(
-    document.getElementById("layers"+id).value
-  ),
-
-  promo:document.getElementById("promo"+id).value,
-
-  discount:parseFloat(
-    document.getElementById("discount"+id).value
-  ),
-
-  promoQty:parseFloat(
-    document.getElementById("promoQty"+id).value
-  ),
-
-  promoTotal:parseFloat(
-    document.getElementById("promoTotal"+id).value
-  )
-};
-
+function promoText(p){
+ if(p.promo==="bogo")return "買一送一";
+ if(p.promo==="buy2get1")return "買二送一";
+ if(p.promo==="second50")return "第二件5折";
+ if(p.promo==="secondCustom")return "第二件"+p.discount+"折";
+ if(p.promo==="nprice")return p.qty+"件 $"+p.promoTotal;
+ return "無促銷";
 }
 
 function valid(p){
-
-  if(
-    !p.name ||
-    !p.brand ||
-    !p.store ||
-    !Number.isFinite(p.price) ||
-    !Number.isFinite(p.sheets) ||
-    !Number.isFinite(p.packs) ||
-    !Number.isFinite(p.layers)
-  ){
-    return false;
-  }
-
-  if(
-    p.price<=0 ||
-    p.sheets<=0 ||
-    p.packs<=0 ||
-    p.layers<2 ||
-    p.layers>6
-  ){
-    return false;
-  }
-
-  if(p.promo==="secondDiscount"){
-    if(
-      !Number.isFinite(p.discount) ||
-      p.discount<0 ||
-      p.discount>10
-    ){
-      return false;
-    }
-  }
-
-  if(p.promo==="nForPrice"){
-    if(
-      !Number.isFinite(p.promoQty) ||
-      !Number.isFinite(p.promoTotal) ||
-      p.promoQty<=0 ||
-      p.promoTotal<=0
-    ){
-      return false;
-    }
-  }
-
-  return true;
+ if(!p.name||!p.brand||!p.store)return false;
+ if(p.price<=0||p.sheets<=0||p.packs<=0||p.layers<=0)return false;
+ if(p.promo==="secondCustom"&&(p.discount<0||p.discount>10))return false;
+ if(p.promo==="nprice"&&(p.qty<=0||p.promoTotal<=0))return false;
+ return true;
 }
-
-function promoName(p){
-
-  switch(p.promo){
-
-    case "bogo":
-      return "買一送一";
-
-    case "buy2get1":
-      return "買二送一";
-
-    case "second50":
-      return "第二件5折";
-
-    case "secondDiscount":
-      return "第二件"+p.discount+"折";
-
-    case "nForPrice":
-      return p.promoQty+"件 $"+p.promoTotal;
-
-    default:
-      return "無促銷";
-  }
-}
-
-
-/* ==============================
-   真實成本計算
-============================== */
 
 function calculate(p){
+ var paid=p.price;
+ var sets=1;
 
-  var actualPaid=p.price;
-  var setsReceived=1;
+ if(p.promo==="bogo"){
+   paid=p.price;
+   sets=2;
+ }else if(p.promo==="buy2get1"){
+   paid=p.price*2;
+   sets=3;
+ }else if(p.promo==="second50"){
+   paid=p.price*1.5;
+   sets=2;
+ }else if(p.promo==="secondCustom"){
+   paid=p.price*(1+p.discount/10);
+   sets=2;
+ }else if(p.promo==="nprice"){
+   paid=p.promoTotal;
+   sets=p.qty;
+ }
 
-  if(p.promo==="bogo"){
-    actualPaid=p.price;
-    setsReceived=2;
-  }
+ p.promoText=promoText(p);
+ p.actualPaid=paid;
+ p.actualPacks=p.packs*sets;
+ p.totalSheets=p.sheets*p.actualPacks;
+ p.perPack=paid/p.actualPacks;
+ p.perSheet=paid/p.totalSheets;
+ p.layerRef=p.perSheet/p.layers;
 
-  else if(p.promo==="buy2get1"){
-    actualPaid=p.price*2;
-    setsReceived=3;
-  }
-
-  else if(p.promo==="second50"){
-    actualPaid=p.price*1.5;
-    setsReceived=2;
-  }
-
-  else if(p.promo==="secondDiscount"){
-    actualPaid=p.price*(1+(p.discount/10));
-    setsReceived=2;
-  }
-
-  else if(p.promo==="nForPrice"){
-    actualPaid=p.promoTotal;
-    setsReceived=p.promoQty;
-  }
-
-  p.actualPaid=actualPaid;
-  p.setsReceived=setsReceived;
-  p.actualPacks=p.packs*setsReceived;
-  p.totalSheets=p.sheets*p.actualPacks;
-  p.costPerPack=p.actualPaid/p.actualPacks;
-  p.costPerSheet=p.actualPaid/p.totalSheets;
-  p.layerReference=p.costPerSheet/p.layers;
-  p.promoText=promoName(p);
-
-  return p;
+ return p;
 }
 
+/* 開始比價 */
+el("compareBtn").addEventListener("click",function(){
 
-/* ==============================
-   即時比價
-============================== */
+ var ids=productCount===3?["A","B","C"]:["A","B"];
+ var arr=[];
 
-function compareProducts(){
+ for(var i=0;i<ids.length;i++){
+   var p=getProduct(ids[i]);
 
-  var result=document.getElementById("result");
+   if(!valid(p)){
+     el("result").style.display="block";
+     el("result").innerHTML=
+     '<div class="error">商品 '+ids[i]+
+     ' 資料尚未填完整，請檢查商品名稱、品牌、通路、價格、抽數、包數、層數與促銷資料。</div>';
+     el("result").scrollIntoView({behavior:"smooth"});
+     return;
+   }
 
-  var ids=
-  productCount===2
-  ?["A","B"]
-  :["A","B","C"];
+   arr.push(calculate(p));
+ }
 
-  var products=[];
+ arr.sort(function(a,b){return a.perSheet-b.perSheet;});
+ compared=arr;
 
-  for(var i=0;i<ids.length;i++){
+ var html=
+ '<div class="winner">🏆 真實每抽價格最低：'+
+ esc(arr[0].name)+
+ '<br>'+esc(arr[0].brand)+'｜'+esc(arr[0].store)+
+ '<br>每抽約 $'+arr[0].perSheet.toFixed(4)+'</div>';
 
-    var p=getProduct(ids[i]);
+ arr.forEach(function(p,i){
+   var medal=i===0?"🥇":i===1?"🥈":"🥉";
 
-    if(!valid(p)){
+   html+=
+   '<div class="result-row">'+
+   '<div class="rank">'+medal+' 第 '+(i+1)+' 名</div>'+
+   '<strong>'+esc(p.name)+'</strong>'+
+   '<br>'+esc(p.brand)+'｜'+esc(p.store)+
+   '<br>賣場標示單組價：$'+p.price.toFixed(2)+
+   '<div class="promo-box">🏷️ '+esc(p.promoText)+
+   '<br>實際付款：$'+p.actualPaid.toFixed(2)+
+   '<br>實際取得：'+p.actualPacks+' 包</div>'+
+   '規格：'+p.sheets+'抽 × '+p.packs+'包 × '+p.layers+'層'+
+   '<br>促銷後總抽數：'+p.totalSheets+'抽'+
+   '<br>實際每包：約 $'+p.perPack.toFixed(2)+
+   '<br><span class="unit">真正每抽：約 $'+p.perSheet.toFixed(4)+'</span>'+
+   '<br>層數換算參考：$'+p.layerRef.toFixed(5)+
+   '</div>';
+ });
 
-      result.style.display="block";
+ html+=
+ '<button id="saveBtn" class="save-btn" type="button">'+
+ '💾 將這次商品加入歷史紀錄</button>'+
+ '<div id="saveMessage"></div>';
 
-      result.innerHTML=
-      '<div class="error">'+
-      '商品 '+ids[i]+' 的資料尚未完整。<br>'+
-      '請確認商品名稱、品牌、通路、價格、抽數、包數、層數及促銷資料。'+
-      '</div>';
+ el("result").innerHTML=html;
+ el("result").style.display="block";
 
-      result.scrollIntoView({behavior:"smooth"});
+ el("saveBtn").addEventListener("click",saveCompared);
+ el("result").scrollIntoView({behavior:"smooth"});
+});
 
-      return;
-    }
+/* 歷史資料 */
+function load(){
+ try{
+   var x=JSON.parse(localStorage.getItem("tissueHistoryV23"));
+   return Array.isArray(x)?x:[];
+ }catch(e){return [];}
+}
 
-    products.push(calculate(p));
-  }
+function save(data){
+ localStorage.setItem("tissueHistoryV23",JSON.stringify(data));
+ updateCount();
+}
 
-  products.sort(function(a,b){
-    return a.costPerSheet-b.costPerSheet;
-  });
+function key(p){
+ return[
+  String(p.name||"").trim().toLowerCase(),
+  String(p.brand||"").trim().toLowerCase(),
+  String(p.store||"").trim().toLowerCase(),
+  num(p.sheets),num(p.packs),num(p.layers)
+ ].join("|");
+}
 
-  lastComparedProducts=products;
+function snapshot(p,date){
+ return{
+  date:date||now(),
+  price:num(p.price),
+  promoText:p.promoText||"無促銷",
+  actualPaid:num(p.actualPaid||p.price),
+  actualPacks:num(p.actualPacks||p.packs),
+  perSheet:num(p.perSheet||p.costPerSheet)
+ };
+}
 
-  var html=
+function same(a,b){
+ if(!a||!b)return false;
+ return Math.abs(num(a.price)-num(b.price))<0.000001 &&
+ String(a.promoText||"")===String(b.promoText||"") &&
+ Math.abs(num(a.actualPaid)-num(b.actualPaid))<0.000001 &&
+ Math.abs(num(a.actualPacks)-num(b.actualPacks))<0.000001 &&
+ Math.abs(num(a.perSheet||a.costPerSheet)-num(b.perSheet))<0.0000001;
+}
 
-  '<div class="winner">'+
-  '🏆 真實每抽價格最低：'+
-  escapeHtml(products[0].name)+
-  '<br>'+
-  escapeHtml(products[0].brand)+
-  '｜'+
-  escapeHtml(products[0].store)+
-  '<br>每抽約 $'+
-  products[0].costPerSheet.toFixed(4)+
-  '</div>';
+function normalize(p){
+ p=p||{};
 
-  products.forEach(function(p,index){
+ if(!p.name){
+   p.name=(p.brand||"商品")+" "+(p.sheets||"")+"抽 "+(p.packs||"")+"包";
+ }
 
-    var medal=
-    index===0?"🥇":
-    index===1?"🥈":"🥉";
+ p.perSheet=num(p.perSheet||p.costPerSheet);
+ p.perPack=num(p.perPack||p.costPerPack);
+ p.layerRef=num(p.layerRef||p.layerReference);
 
-    html+=
-    '<div class="result-row">'+
-    '<div class="rank">'+medal+' 第 '+(index+1)+' 名</div>'+
-    '<strong>'+escapeHtml(p.name)+'</strong>'+
-    '<br>'+escapeHtml(p.brand)+'｜'+escapeHtml(p.store)+
-    '<br>賣場標示單組價：$'+p.price.toFixed(2)+
+ if(!p.actualPacks)p.actualPacks=num(p.packs);
+ if(!p.actualPaid)p.actualPaid=num(p.price);
+ if(!p.totalSheets)p.totalSheets=num(p.sheets)*num(p.actualPacks);
+ if(!p.perSheet&&p.totalSheets)p.perSheet=p.actualPaid/p.totalSheets;
+ if(!p.perPack&&p.actualPacks)p.perPack=p.actualPaid/p.actualPacks;
+ if(!p.layerRef&&p.layers)p.layerRef=p.perSheet/p.layers;
 
-    '<div class="promo-info">'+
-    '🏷️ '+escapeHtml(p.promoText)+
-    '<br>實際付款：$'+p.actualPaid.toFixed(2)+
-    '<br>實際取得：'+p.actualPacks+' 包'+
-    '</div>'+
+ p.promoText=p.promoText||"無促銷";
+ p.key=key(p);
 
-    '<br>規格：'+
-    p.sheets+' 抽
+ var raw=Array.isArray(p.priceHistory)?p.priceHistory:[];
+ var cleaned=[];
+
+ raw.forEach(function(x){
+   var s={
+    date:x.date||"",
+    price:num(x.price),
+    promoText:x.promoText||"無促銷",
+    actualPaid:num(x.actualPaid||x.price),
+    actualPacks:num(x.actualPacks||p.packs),
+    perSheet:num(x.perSheet||x.costPerSheet)
+   };
+
+   if(!cleaned.length||!same(cleaned[cleaned.length-1],s)){
+     cleaned.push(s);
+   }
+ });
+
+ if(!cleaned.length){
+   cleaned.push(snapshot(p,p.createdAt||p.updatedAt||now()));
+ }
+
+ var current=snapshot(p,p.updatedAt||now());
+
+ if(!same(cleaned[cleaned.length-1],current)){
+   cleaned.push(current);
+ }
+
+ p.priceHistory=cleaned;
+
+ var prices=cleaned.map(function(x){return x.price;}).filter(function(x){return x>0;});
+ var units=cleaned.map(function(x){return x.perSheet;}).filter(function(x){return x>0;});
+
+ p.lowestPrice=prices.length?Math.min.apply(null,prices):num(p.price);
+ p.lowestUnit=units.length?Math.min.apply(null,units):p.perSheet;
+
+ return p;
+}
+
+function saveCompared(){
+ var history=load().map(normalize);
+ var added=0,updated=0,unchanged=0;
+
+ compared.forEach(function(p){
+
+   var k=key(p);
+
+   var found=history.find(function(x){
+     return key(x)===k;
+   });
+
+   /* 相容 V2.3 舊資料 */
+   if(!found){
+     found=history.find(function(x){
+       return String(x.brand||"").toLowerCase()===String(p.brand).toLowerCase() &&
+       String(x.store||"").toLowerCase()===String(p.store).toLowerCase() &&
+       num(x.sheets)===p.sheets &&
+       num(x.packs)===p.packs &&
+       num(x.layers)===p.layers;
+     });
+   }
+
+   var snap=snapshot(p,now());
+
+   if(found){
+     found=normalize(found);
+     var last=found.priceHistory[found.priceHistory.length-1];
+
+     if(same(last,snap)){
+       unchanged++;
+       return;
+     }
+
+     found.priceHistory.push(snap);
+
+     found.name=p.name;
+     found.brand=p.brand;
+     found.store=p.store;
+     found.price=p.price;
+     found.sheets=p.sheets;
+     found.packs=p.packs;
+     found.layers=p.layers;
+     found.promo=p.promo;
+     found.promoText=p.promoText;
+     found.actualPaid=p.actualPaid;
+     found.actualPacks=p.actualPacks;
+     found.totalSheets=p.totalSheets;
+     found.perPack=p.perPack;
+     found.perSheet=p.perSheet;
+     found.layerRef=p.layerRef;
+     found.updatedAt=now();
+     found.key=key(p);
+
+     var prices=found.priceHistory.map(function(x){return num(x.price);}).filter(function(x){return x>0;});
+     var units=found.priceHistory.map(function(x){return num(x.perSheet);}).filter(function(x){return x>0;});
+
+     found.lowestPrice=Math.min.apply(null,prices);
+     found.lowestUnit=Math.min.apply(null,units);
+     updated++;
+
+   }else{
+     history.push({
+       key:k,
+       name:p.name,
+       brand:p.brand,
+       store:p.store,
+       price:p.price,
+       sheets:p.sheets,
+       packs:p.packs,
+       layers:p.layers,
+       promo:p.promo,
+       promoText:p.promoText,
+       actualPaid:p.actualPaid,
+       actualPacks:p.actualPacks,
+       totalSheets:p.totalSheets,
+       perPack:p.perPack,
+       perSheet:p.perSheet,
+       layerRef:p.layerRef,
+       lowestPrice:p.price,
+       lowestUnit:p.perSheet,
+       createdAt:now(),
+       updatedAt:now(),
+       priceHistory:[snap]
+     });
+     added++;
+   }
+ });
+
+ save(history);
+
+ el("saveMessage").innerHTML=
+ '<div class="success">儲存完成：新增 '+added+
+ ' 筆、更新 '+updated+
+ ' 筆、相同未重複 '+unchanged+' 筆。</div>';
+}
+
+function updateCount(){
+ el("historyCount").textContent="目前 "+load().length+" 筆商品紀錄";
+}
+
+/* 查看走勢 */
+el("historyBtn").addEventListener("click",function(){
+ var data=load().map(normalize);
+ save(data);
+
+ el("historyTitle").textContent="📈 歷史紀錄／價格走勢";
+ el("historySection").style.display="block";
+
+ if(!data.length){
+   el("historyList").innerHTML='<div class="error">目前沒有歷史紀錄。</div>';
+   return;
+ }
+
+ data.sort(function(a,b){return String(b.updatedAt||"").localeCompare(String(a.updatedAt||""));});
+
+ var html="";
+
+ data.forEach(function(p){
+
+   var change="";
+   if(p.priceHistory.length>=2){
+     var a=p.priceHistory[p.priceHistory.length-2];
+     var b=p.priceHistory[p.priceHistory.length-1];
+     var d=b.perSheet-a.perSheet;
+
+     if(d<0)change='<div class="down">↓ 比上次每抽便宜 $'+Math.abs(d).toFixed(4)+'</div>';
+     else if(d>0)change='<div class="up">↑ 比上次每抽貴 $'+d.toFixed(4)+'</div>';
+     else change='<div class="same">每抽價格與上次相同</div>';
+   }
+
+   var trend='<div class="trend"><strong>📈 價格走勢</strong>';
+
+   p.priceHistory.forEach(function(x){
+     trend+='<div class="trend-line">'+esc(x.date)+
+     '　$'+x.price.toFixed(2)+
+     '｜'+esc(x.promoText)+
+     '｜每抽 $'+x.perSheet.toFixed(4)+'</div>';
+   });
+
+   trend+='<small>共 '+p.priceHistory.length+' 次有效紀錄</small></div>';
+
+   html+=
+   '<div class="history-row">'+
+   '<strong>'+esc(p.name)+'</strong>'+
+   '<br>'+esc(p.brand)+'｜'+esc(p.store)+
+   '<br>最新標示價：$'+num(p.price).toFixed(2)+
+   '<br><span class="badge">'+esc(p.promoText)+'</span>'+
+   '<br>實際付款：$'+num(p.actualPaid).toFixed(2)+
+   '<br>實際取得：'+num(p.actualPacks)+'包'+
+   '<br>規格：'+p.sheets+'抽 × '+p.packs+'包 × '+p.layers+'層'+
+   '<br><strong>真正每抽：$'+p.perSheet.toFixed(4)+'</strong>'+
+   '<br>歷史最低標示價：$'+p.lowestPrice.toFixed(2)+
+   '<br>歷史最低每抽：$'+p.lowestUnit.toFixed(4)+
+   '<br>最後更新：'+esc(p.updatedAt||"")+
+   change+trend+
+   '<button class="delete-btn" data-key="'+encodeURIComponent(key(p))+'">刪除此筆</button>'+
+   '</div>';
+ });
+
+ el("historyList").innerHTML=html;
+
+ document.querySelectorAll(".delete-btn").forEach(function(btn){
+   btn.addEventListener("click",function(){
+     if(!confirm("確定刪除此商品紀錄？"))return;
+     var k=decodeURIComponent(this.getAttribute("data-key"));
+     var d=load().map(normalize).filter(function(x){return key(x)!==k;});
+     save(d);
+     el("historyBtn").click();
+   });
+ });
+
+ el("historySection").scrollIntoView({behavior:"smooth"});
+});
+
+/* 最新價格排名 */
+el("currentRankBtn").addEventListener("click",function(){
+ var data=load().map(normalize);
+
+ el("historyTitle").textContent="🏆 目前最新價格排名";
+ el("historySection").style.display="block";
+
+ if(!data.length){
+   el("historyList").innerHTML='<div class="error">目前沒有歷史資料。</div>';
+   return;
+ }
+
+ data.sort(function(a,b){return a.perSheet-b.perSheet;});
+
+ var html='<div class="summary">🏆 目前最新價格最低：<strong>'+
+ esc(data[0].name)+'</strong><br>'+
+ esc(data[0].brand)+'｜'+esc(data[0].store)+
+ '<br>每抽 $'+data[0].perSheet.toFixed(4)+
+ '<br><span class="badge current">只比較各商品最後一次紀錄</span></div>';
+
+ data.forEach(function(p,i){
+   var medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
+   html+='<div class="history-row">'+
+   '<div class="rank">'+medal+' 第 '+(i+1)+' 名</div>'+
+   '<strong>'+esc(p.name)+'</strong>'+
+   '<br>'+esc(p.brand)+'｜'+esc(p.store)+
+   '<br>最新價格：$'+num(p.price).toFixed(2)+
+   '<br>'+esc(p.promoText)+
+   '<br><strong>真正每抽：$'+p.perSheet.toFixed(4)+'</strong>'+
+   '<br>最後更新：'+esc(p.updatedAt||"")+
+   '</div>';
+ });
+
+ el("historyList").innerHTML=html;
+ el("historySection").scrollIntoView({behavior:"smooth"});
+});
+
+/* 一鍵整理全部歷史 */
+el("organizeBtn").addEventListener("click",function(){
+ var data=load().map(normalize);
+ save(data);
+
+ el("historyTitle").textContent="🧹 所有歷史價格排名";
+ el("historySection").style.display="block";
+
+ if(!data.length){
+   el("historyList").innerHTML='<div class="error">目前沒有歷史價格可以整理。</div>';
+   return;
+ }
+
+ var all=[];
+
+ data.forEach(function(p){
+   p.priceHistory.forEach(function(x,index){
+     if(x.perSheet<=0)return;
+
+     all.push({
+       name:p.name,
+       brand:p.brand,
+       store:p.store,
+       sheets:p.sheets,
+       packs:p.packs,
+       layers:p.layers,
+       date:x.date,
+       price:x.price,
+       promoText:x.promoText,
+       actualPaid:x.actualPaid,
+       actualPacks:x.actualPacks,
+       perSheet:x.perSheet,
+       latest:index===p.priceHistory.length-1
+     });
+   });
+ });
+
+ all.sort(function(a,b){
+   if(a.perSheet===b.perSheet)return String(b.date).localeCompare(String(a.date));
+   return a.perSheet-b.perSheet;
+ });
+
+ var html=
+ '<div class="summary">🧹 整理完成，共 '+all.length+
+ ' 筆有效歷史價格。<br>'+
+ '依「真正每抽」由便宜到貴排列。<br>'+
+ '<span class="badge old">歷史價格不代表今天仍有相同售價或促銷</span></div>';
+
+ all.forEach(function(x,i){
+   var medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
+
+   html+=
+   '<div class="history-row">'+
+   '<div class="rank">'+medal+' 第 '+(i+1)+' 名</div>'+
+   '<strong>'+esc(x.name)+'</strong>'+
+   '<br>'+esc(x.brand)+'｜'+esc(x.store)+
+   '<br>當時標示價：$'+x.price.toFixed(2)+
+   '<br><span class="badge">'+esc(x.promoText)+'</span>'+
+   '<br>當時實付：$'+x.actualPaid.toFixed(2)+
+   '<br>實際取得：'+x.actualPacks+'包'+
+   '<br>規格：'+x.sheets+'抽 × '+x.packs+'包 × '+x.layers+'層'+
+   '<br><strong>真正每抽：$'+x.perSheet.toFixed(4)+'</strong>'+
+   '<br>紀錄日期：'+esc(x.date)+
+   '<br><span class="badge '+(x.latest?"current":"old")+'">'+
+   (x.latest?"目前最新紀錄":"歷史價格")+
+   '</span></div>';
+ });
+
+ el("historyList").innerHTML=html;
+ el("historySection").scrollIntoView({behavior:"smooth"});
+});
+
+/* 清除 */
+el("clearBtn").addEventListener("click",function(){
+ if(!confirm("確定清除全部歷史紀錄？\n清除後無法復原。"))return;
+
+ localStorage.removeItem("tissueHistoryV23");
+ updateCount();
+ el("historySection").style.display="none";
+ el("historyList").innerHTML="";
+});
+
+updateCount();
+</script>
+
+</body>
+  </html>
