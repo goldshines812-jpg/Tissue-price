@@ -26,13 +26,14 @@ body {
 
 h1 {
   font-size: 34px;
-  margin-bottom: 8px;
+  margin: 0 0 8px;
 }
 
 .subtitle {
   color: #777;
   font-size: 18px;
   margin-bottom: 30px;
+  line-height: 1.6;
 }
 
 .card {
@@ -110,13 +111,14 @@ select:focus {
   font-size: 18px;
 }
 
-.result-item:last-child {
+.result-item:last-of-type {
   border-bottom: none;
 }
 
 .rank {
-  font-size: 21px;
+  font-size: 22px;
   font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .cost {
@@ -177,7 +179,7 @@ select:focus {
 <h1>🧻 衛生紙比價神器</h1>
 
 <div class="subtitle">
-不同抽數、包數、層數，也能公平比較
+不同品牌、通路、抽數、包數、層數，一次換算比較
 </div>
 
 
@@ -265,16 +267,16 @@ placeholder="例如：12"
 >
 
 
-<label for="layersA">幾層</label>
+<label for="layersA">層數</label>
 
-<input
-id="layersA"
-type="number"
-inputmode="numeric"
-min="1"
-step="1"
-placeholder="例如：3"
->
+<select id="layersA">
+<option value="">請選擇層數</option>
+<option value="2">2 層</option>
+<option value="3">3 層</option>
+<option value="4">4 層</option>
+<option value="5">5 層</option>
+<option value="6">6 層</option>
+</select>
 
 </div>
 
@@ -363,16 +365,16 @@ placeholder="例如：10"
 >
 
 
-<label for="layersB">幾層</label>
+<label for="layersB">層數</label>
 
-<input
-id="layersB"
-type="number"
-inputmode="numeric"
-min="1"
-step="1"
-placeholder="例如：3"
->
+<select id="layersB">
+<option value="">請選擇層數</option>
+<option value="2">2 層</option>
+<option value="3">3 層</option>
+<option value="4">4 層</option>
+<option value="5">5 層</option>
+<option value="6">6 層</option>
+</select>
 
 </div>
 
@@ -461,16 +463,16 @@ placeholder="例如：12"
 >
 
 
-<label for="layersC">幾層</label>
+<label for="layersC">層數</label>
 
-<input
-id="layersC"
-type="number"
-inputmode="numeric"
-min="1"
-step="1"
-placeholder="例如：3"
->
+<select id="layersC">
+<option value="">請選擇層數</option>
+<option value="2">2 層</option>
+<option value="3">3 層</option>
+<option value="4">4 層</option>
+<option value="5">5 層</option>
+<option value="6">6 層</option>
+</select>
 
 </div>
 
@@ -491,32 +493,4 @@ class="card"
 
 
 <div class="note">
-※ 比價方式：將不同抽數、包數與層數統一換算成
-「每 1000 個單層抽取單位成本」。
-實際售價、促銷與商品規格請以販售通路標示為準。
-</div>
-
-</div>
-
-
-<script>
-
-(function () {
-
-"use strict";
-
-
-function value(id) {
-
-  return document
-    .getElementById(id)
-    .value
-    .trim();
-
-}
-
-
-function numberValue(id) {
-
-  return Number(
-    document
+※ 比價方式：將不同抽數、包數與層數換
