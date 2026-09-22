@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#1976d2">
-<title>衛生紙比價神器 V2.7.1</title>
+<title>衛生紙比價神器 V2.7.2</title>
 
 <style>
 *{box-sizing:border-box}
@@ -216,7 +216,7 @@ button{cursor:pointer}
 <body>
 <div class="container">
 
-<h1>🧻 衛生紙比價神器 V2.7.1</h1>
+<h1>🧻 衛生紙比價神器 V2.7.2</h1>
 <div class="subtitle">促銷換算・價格走勢・歷史價格一鍵整理</div>
 
 <div class="card">
@@ -539,13 +539,13 @@ button{cursor:pointer}
 
 
 <div class="note" style="margin-top:12px">
-V2.7.1 商品資料查詢原則：優先使用本機已確認資料與具公開介面的開放資料來源。
+V2.7.2 商品資料查詢原則：優先使用本機已確認資料與具公開介面的開放資料來源。
 本版不會自動爬取購物網站，也不會繞過登入、付費牆或技術限制。
 GS1 Taiwan 作為 GTIN 標準與驗證的重要來源；在未確認可供本 APP 程式化再利用的授權/API 前，不直接自動抓取其資料。
 </div>
 
 <div class="footer">
-衛生紙比價神器 V2.7.1｜最新版
+衛生紙比價神器 V2.7.2｜最新版
 </div>
 
 </div>
@@ -594,7 +594,7 @@ el("threeBtn").addEventListener("click",function(){
 
 /* 自訂品牌、通路、促銷欄位 */
 
-/* ===== V2.7.1 合法／開放資料來源查詢 =====
+/* ===== V2.7.2 合法／開放資料來源查詢 =====
    順序：
    1. 本機已確認商品快取（使用者裝置 localStorage）
    2. Open Products Facts 公開 API
@@ -664,7 +664,7 @@ function inferTissueSpecs(text){
   text=String(text||"").replace(/,/g," ");
   return {
     sheets:firstNumber(/(\d{2,4})\s*(?:抽|sheets?|pulls?)/i,text),
-    packs:firstNumber(/(\d{1,3})\s*(?:包|入|packs?|pk)\b?/i,text),
+    packs:firstNumber(/(\d{1,3})\s*(?:包|入)/i,text) || firstNumber(/(\d{1,3})\s*(?:packs?|pk)\b/i,text),
     layers:firstNumber(/([2-6])\s*(?:層|ply|plies)/i,text)
   };
 }
@@ -1345,7 +1345,7 @@ el("clearBtn").addEventListener("click",function(){
 updateCount();
 
 
-/* ===== V2.7.1 條碼掃描：原生 BarcodeDetector + html5-qrcode 備援 ===== */
+/* ===== V2.7.2 條碼掃描：原生 BarcodeDetector + html5-qrcode 備援 ===== */
 var scanSessions={A:null,B:null,C:null};
 
 function scanStatus(id,msg,ok){
