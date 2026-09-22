@@ -205,7 +205,8 @@ button{cursor:pointer}
 <option>其他通路</option>
 </select>
 <input id="storeOtherA" class="extra" placeholder="請輸入通路">
-
+<label>商品購買網址（選填）</label>
+<input id="urlA" type="url" inputmode="url" placeholder="例如：https://商品網址">
 <label>賣場標示售價（元）</label>
 <input id="priceA" type="number" inputmode="decimal" placeholder="例如：299">
 
@@ -510,6 +511,7 @@ function getProduct(id){
   name:el("name"+id).value.trim(),
   brand:brand(id),
   store:store(id),
+   url:(el("url"+id) ? el("url"+id).value.trim() : ""),
   price:num(el("price"+id).value),
   sheets:num(el("sheets"+id).value),
   packs:num(el("packs"+id).value),
@@ -617,7 +619,8 @@ el("compareBtn").addEventListener("click",function(){
    '<br>實際每包：約 $'+p.perPack.toFixed(2)+
    '<br><span class="unit">真正每抽：約 $'+p.perSheet.toFixed(4)+'</span>'+
    '<br>層數換算參考：$'+p.layerRef.toFixed(5)+
-   '</div>';
+  (p.url ? '<br><a href="'+esc(p.url)+'" target="_blank" rel="noopener noreferrer">🛒 前往購買</a>' : '')+
+     '</div>';
  });
 
  html+=
