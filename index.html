@@ -304,6 +304,7 @@ button{cursor:pointer}
 <option value="second50">第二件5折</option>
 <option value="secondCustom">第二件自訂折數</option>
 <option value="nprice">任選 N 件特價</option>
+<option value="twoTier">1 件 X 元、2 件 Y 元</option>
 </select>
 
 <div id="discountBoxA" class="extra">
@@ -316,6 +317,13 @@ button{cursor:pointer}
 <input id="qtyA" type="number" inputmode="numeric" placeholder="例如：2">
 <label>活動總價</label>
 <input id="totalA" type="number" inputmode="decimal" placeholder="例如：399">
+</div>
+
+<div id="twoTierBoxA" class="extra">
+<div class="note">1 件價格請填上方「賣場標示售價（元）」。</div>
+<label>2 件活動總價（元）</label>
+<input id="twoTierTotalA" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="例如：2 件 499 元，填 499">
+<div id="twoTierAverageA" class="note" aria-live="polite">平均每件：請輸入 2 件活動總價</div>
 </div>
 </div>
 
@@ -397,6 +405,7 @@ button{cursor:pointer}
 <option value="second50">第二件5折</option>
 <option value="secondCustom">第二件自訂折數</option>
 <option value="nprice">任選 N 件特價</option>
+<option value="twoTier">1 件 X 元、2 件 Y 元</option>
 </select>
 
 <div id="discountBoxB" class="extra">
@@ -409,6 +418,13 @@ button{cursor:pointer}
 <input id="qtyB" type="number" inputmode="numeric" placeholder="例如：2">
 <label>活動總價</label>
 <input id="totalB" type="number" inputmode="decimal" placeholder="例如：399">
+</div>
+
+<div id="twoTierBoxB" class="extra">
+<div class="note">1 件價格請填上方「賣場標示售價（元）」。</div>
+<label>2 件活動總價（元）</label>
+<input id="twoTierTotalB" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="例如：2 件 499 元，填 499">
+<div id="twoTierAverageB" class="note" aria-live="polite">平均每件：請輸入 2 件活動總價</div>
 </div>
 </div>
 
@@ -490,6 +506,7 @@ button{cursor:pointer}
 <option value="second50">第二件5折</option>
 <option value="secondCustom">第二件自訂折數</option>
 <option value="nprice">任選 N 件特價</option>
+<option value="twoTier">1 件 X 元、2 件 Y 元</option>
 </select>
 
 <div id="discountBoxC" class="extra">
@@ -502,6 +519,13 @@ button{cursor:pointer}
 <input id="qtyC" type="number" inputmode="numeric" placeholder="例如：2">
 <label>活動總價</label>
 <input id="totalC" type="number" inputmode="decimal" placeholder="例如：399">
+</div>
+
+<div id="twoTierBoxC" class="extra">
+<div class="note">1 件價格請填上方「賣場標示售價（元）」。</div>
+<label>2 件活動總價（元）</label>
+<input id="twoTierTotalC" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="例如：2 件 499 元，填 499">
+<div id="twoTierAverageC" class="note" aria-live="polite">平均每件：請輸入 2 件活動總價</div>
 </div>
 </div>
 
@@ -894,8 +918,23 @@ async function lookupBarcode(id,automatic){
 
    el("nBox"+id).style.display=
    this.value==="nprice"?"block":"none";
+   el("twoTierBox"+id).style.display=this.value==="twoTier"?"block":"none";
+   updateTwoTierAverage(id);
+ });
+ ["price","twoTierTotal"].forEach(function(field){
+   el(field+id).addEventListener("input",function(){updateTwoTierAverage(id);});
  });
 });
+
+function updateTwoTierAverage(id){
+ var price=num(el("price"+id).value);
+ var total=num(el("twoTierTotal"+id).value);
+ var box=el("twoTierAverage"+id);
+ if(total>0){
+   box.textContent="1 件 $"+(price>0?price.toFixed(2):"（請填單件價）")+
+     "；2 件 $"+total.toFixed(2)+"；平均每件 $"+(total/2).toFixed(2);
+ }else box.textContent="平均每件：請輸入 2 件活動總價";
+}
 
 function brand(id){
  var v=el("brand"+id).value;
@@ -922,7 +961,8 @@ function getProduct(id){
   promo:el("promo"+id).value,
   discount:num(el("discount"+id).value),
   qty:num(el("qty"+id).value),
-  promoTotal:num(el("total"+id).value)
+  promoTotal:num(el("total"+id).value),
+  twoTierTotal:num(el("twoTierTotal"+id).value)
  };
 }
 
@@ -932,6 +972,7 @@ function promoText(p){
  if(p.promo==="second50")return "第二件5折";
  if(p.promo==="secondCustom")return "第二件"+p.discount+"折";
  if(p.promo==="nprice")return p.qty+"件 $"+p.promoTotal;
+ if(p.promo==="twoTier")return "1 件 $"+p.price.toFixed(2)+"、2 件 $"+p.twoTierTotal.toFixed(2)+"（平均每件 $"+(p.twoTierTotal/2).toFixed(2)+"）";
  return "無促銷";
 }
 
@@ -940,6 +981,7 @@ function valid(p){
  if(p.price<=0||p.sheets<=0||p.packs<=0||p.layers<=0)return false;
  if(p.promo==="secondCustom"&&(p.discount<0||p.discount>10))return false;
  if(p.promo==="nprice"&&(p.qty<=0||p.promoTotal<=0))return false;
+ if(p.promo==="twoTier"&&p.twoTierTotal<=0)return false;
  return true;
 }
 
@@ -962,6 +1004,9 @@ function calculate(p){
  }else if(p.promo==="nprice"){
    paid=p.promoTotal;
    sets=p.qty;
+ }else if(p.promo==="twoTier"){
+   paid=p.twoTierTotal;
+   sets=2;
  }
 
  p.promoText=promoText(p);
