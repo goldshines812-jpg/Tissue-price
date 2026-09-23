@@ -631,6 +631,65 @@ el("threeBtn").addEventListener("click",function(){
    GS1 Taiwan 目前僅作為標準/驗證來源概念；本版不以未確認授權的方式爬取其網站。
 */
 var PRODUCT_CACHE_KEY="tissueProductCacheV27";
+// 由使用者提供的包裝與條碼照片逐項核對；未見於包裝的規格保留空白。
+var VERIFIED_PRODUCTS={
+  "4710104025637":{name:"五月花厚棒衛生紙",brand:"五月花",sheets:90,packs:10},
+  "4713575153359":{name:"新柔感衛生紙",brand:"新柔感",sheets:110,packs:24},
+  "4713575153366":{name:"新柔感三層衛生紙",brand:"新柔感",sheets:100,packs:24,layers:3},
+  "4710104030075":{name:"柔匠2層抽取式衛生紙",brand:"柔匠",sheets:100,packs:24,layers:2},
+  "4710104030105":{name:"柔匠2層抽取式衛生紙",brand:"柔匠",sheets:100,packs:6,layers:2},
+  "4710104029598":{name:"柔匠4層抽取式衛生紙",brand:"柔匠",sheets:90,packs:10,layers:4},
+  "4710020370224":{name:"Tempo綺香neutral抽取式衛生紙",brand:"Tempo 得寶",packs:10,layers:4},
+  "4710020390062":{name:"維達柔膚細韌抽取式衛生紙",brand:"Vinda維達",sheets:140,packs:24,layers:2},
+  "4710020390079":{name:"維達韌式滑感衛生紙",brand:"Vinda維達",sheets:110,packs:6,layers:3},
+  "4710020390093":{name:"維達韌式滑感衛生紙",brand:"Vinda維達",sheets:110,packs:24,layers:3},
+  "4710020370255":{name:"Tempo奢羽三層抽取式衛生紙",brand:"Tempo 得寶",sheets:80,packs:10,layers:3},
+  "4710114819295":{name:"舒潔絲厚蓬軟抽取式衛生紙",brand:"舒潔",sheets:80,packs:20,layers:3},
+  "4710114817512":{name:"舒潔棉柔厚韌抽取式衛生紙",brand:"舒潔",sheets:90,packs:24,layers:3},
+  "4710114830399":{name:"舒潔棉柔舒適抽取式衛生紙",brand:"舒潔",sheets:100,packs:20},
+  "4710114830498":{name:"舒潔棉柔舒適抽取式衛生紙",brand:"舒潔",sheets:100,packs:30},
+  "4710114830511":{name:"舒潔柔厚三層抽取式衛生紙",brand:"舒潔",sheets:100,packs:12,layers:3},
+  "4710114813026":{name:"舒潔好絨軟絲柔乳液抽取衛生紙",brand:"舒潔",sheets:100,packs:30},
+  "4710114830559":{name:"舒潔雲柔舒適抽取式衛生紙",brand:"舒潔",sheets:100,packs:24},
+  "4710114817772":{name:"舒潔好絨軟抽取衛生紙",brand:"舒潔",sheets:90,packs:6},
+  "4711033453072":{name:"Paseo 4層衛生紙",brand:"Paseo",sheets:90,packs:10,layers:4},
+  "4711033452983":{name:"唯潔雅淨韌柔感抽取式衛生紙",brand:"唯潔雅",sheets:100,packs:28},
+  "4712425030123":{name:"春風抽取式花紋衛生紙",brand:"春風",sheets:110,packs:10,layers:2},
+  "4710114817642":{name:"舒潔棉柔舒適抽取式衛生紙",brand:"舒潔",sheets:100,packs:12},
+  "4710036721218":{name:"可麗舒柔韌抽取衛生紙",brand:"可麗舒",sheets:100,packs:24,layers:2},
+  "4710036721539":{name:"可麗舒Scott頂級3層柔厚衛生紙",brand:"可麗舒",sheets:100,packs:24,layers:3},
+  "4710104020267":{name:"五月花臻厚柔頂級連續抽取式花紋衛生紙",brand:"五月花",sheets:100,packs:24,layers:3},
+  "4710104027075":{name:"五月花舒敏厚棒衛生紙（86+4抽）",brand:"五月花",sheets:90,packs:10},
+  "4710104030402":{name:"五月花新柔韌衛生紙",brand:"五月花",sheets:100,packs:24,layers:2},
+  "4710104028638":{name:"得意臻柔韌連續抽取式花紋衛生紙",brand:"得意",sheets:110,packs:24,layers:2},
+  "4710104009880":{name:"得意優質抽取式衛生紙",brand:"得意",sheets:100,packs:24,layers:2},
+  "4710104029314":{name:"得意3層抽取式衛生紙",brand:"得意",sheets:100,packs:24,layers:3},
+  "4710104024388":{name:"柔情抽取式衛生紙",brand:"柔情",sheets:100,packs:24},
+  "4711033452044":{name:"Paseo 3層柔韌舒適抽取式衛生紙",brand:"Paseo",sheets:100,packs:24,layers:3},
+  "4711033452808":{name:"Paseo柔滑舒膚抽取式衛生紙",brand:"Paseo",sheets:100,packs:12},
+  "4711033452877":{name:"倍潔雅好韌真Pro抽取式衛生紙",brand:"倍潔雅",sheets:100,packs:24,layers:3},
+  "4710901899202":{name:"唯潔雅潔淨柔感抽取式衛生紙",brand:"唯潔雅",sheets:100,packs:24},
+  "4710901898731":{name:"倍潔雅柔軟舒適抽取式衛生紙",brand:"倍潔雅",sheets:150,packs:14},
+  "4710901898809":{name:"倍潔雅LOVE YOU抽取式衛生紙",brand:"倍潔雅",sheets:100,packs:24},
+  "4710901899431":{name:"優活抽取式衛生紙",brand:"優活",sheets:100,packs:24},
+  "4711033451153":{name:"倍潔雅好韌真Pro抽取式衛生紙",brand:"倍潔雅",sheets:100,packs:6,layers:3},
+  "4712425011184":{name:"情人超細柔抽取式衛生紙",brand:"情人",sheets:100,packs:6,layers:2},
+  "4712425011467":{name:"春風柔韌細緻抽取式衛生紙",brand:"春風",sheets:110,packs:12,layers:2},
+  "4712425021398":{name:"春風三層厚手抽取式衛生紙",brand:"春風",sheets:90,packs:20,layers:3},
+  "4712425029516":{name:"春風SILLACE頂級厚手抽取式衛生紙",brand:"春風",sheets:120,packs:10,layers:3},
+  "4712425032257":{name:"春風乖乖聯名3層厚手抽取式衛生紙",brand:"春風",packs:24,layers:3},
+  "4712425025389":{name:"春風山茶花精華抽取式衛生紙",brand:"春風",sheets:100,packs:24},
+  "4712425023668":{name:"春風柔韌感抽取式衛生紙",brand:"春風",sheets:110,packs:12},
+  "4712425021749":{name:"春風柔膚感抽取式衛生紙",brand:"春風",sheets:110,packs:24,layers:2},
+  "4712425032189":{name:"春風SILLACE御絲厚手抽取式衛生紙",brand:"春風",sheets:90,packs:20,layers:4},
+  "4712425011955":{name:"雪柔全優質抽取式衛生紙",brand:"雪柔",sheets:100,packs:12,layers:2},
+  "4712425025464":{name:"淨世代環保抽取式衛生紙",brand:"淨世代",sheets:100,packs:12,layers:2},
+  "4712425029585":{name:"蒲公英100%回收紙抽取式衛生紙",brand:"蒲公英",sheets:120,packs:24},
+  "4712425032288":{name:"蒲公英4層森活守護抽取式衛生紙",brand:"蒲公英",sheets:90,packs:10,layers:4},
+  "4712425013126":{name:"蒲公英環保抽取式衛生紙",brand:"蒲公英",sheets:100,packs:12,layers:2},
+  "4712425030819":{name:"臻情人3層超細柔抽取式衛生紙",brand:"臻情人",sheets:90,packs:24,layers:3},
+  "4710061070336":{name:"Sunflower向日葵抽取式衛生紙",brand:"Sunflower"}
+};
 
 function loadProductCache(){
   try{
@@ -820,6 +879,17 @@ async function lookupBarcode(id,automatic){
     return;
   }
   input.value=barcode;
+
+  if(VERIFIED_PRODUCTS[barcode]){
+    var verified=VERIFIED_PRODUCTS[barcode];
+    // 換條碼時清除前一商品規格，避免缺漏欄位沿用舊值。
+    ["name","sheets","packs","layers"].forEach(function(field){el(field+id).value="";});
+    applyProductData(id,verified);
+    var missing=[!verified.sheets?"抽數":"",!verified.packs?"包數":"",!verified.layers?"層數":""].filter(Boolean);
+    setLookupStatus(id,missing.length?"⚠️ 已帶入自行核對的商品資料；"+missing.join("、")+"尚待包裝確認，請補填後再比較。":"✅ 已從自行核對的商品資料帶入。",missing.length?"warn":"ok");
+    setSourceInfo(id,"自行核對包裝","");
+    return;
+  }
 
   var cache=loadProductCache();
   if(cache[barcode] && cache[barcode].confirmed===true){
